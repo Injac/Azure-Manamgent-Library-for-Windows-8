@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Azure Management Client for WinRT : Pain free Azure Manamgent on WinRT" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Azure Management Client for WinRT</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Injac/AzureManagmentWinRT">View on GitHub</a>
+
+          <h1 id="project_title">Azure Management Client for WinRT</h1>
+          <h2 id="project_tagline">Pain free Azure Manamgent on WinRT</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Injac/AzureManagmentWinRT/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Injac/AzureManagmentWinRT/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="azure-management-client-for-winrt" class="anchor" href="#azure-management-client-for-winrt"><span class="octicon octicon-link"></span></a>Azure Management Client for WinRT</h2>
+
+<h2>
+<a name="what-is-it" class="anchor" href="#what-is-it"><span class="octicon octicon-link"></span></a>What is it?</h2>
+
+<p>You can write a client app on Windows 8 or Windows 8.1 to manage your Azure subscriptions, without the pain of using the Azure Management REST-API directly.</p>
+
+<h2>
+<a name="why" class="anchor" href="#why"><span class="octicon octicon-link"></span></a>Why?</h2>
+
+<p>Because I started to work on an Azure management client for Windows 8.1.</p>
+
+<h2>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h2>
+
+<p>The client is written to be used with PFX file descriptions that are imported from existing PFX certificate files, and imported into the certificate store of your WinRT app.</p>
+
+<p>To do so, you simply create a FileOpenPicker:</p>
+
+<pre><code>      var filePicker = new FileOpenPicker();
+        filePicker.FileTypeFilter.Add(".pfx");
+        filePicker.FileTypeFilter.Add(".PFX");
+        filePicker.ViewMode = PickerViewMode.List;
+        filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+        filePicker.SettingsIdentifier = "picker1";
+        filePicker.CommitButtonText = "Open PFX file";
+
+        var file = await filePicker.PickSingleFileAsync();
+</code></pre>
+
+<p>Create new CertificateCredentials. Pass the file to the constructor of the CertificateCredentials class. Then call the IntializeCredentials method of the CertificateCredentials client. Pass a string as identifier (this value replaces the friendly name of the pfx description) and the password you used to export your PFX file using certmgr on Windows:</p>
+
+<pre><code> CertificateCredentials creds = new CertificateCredentials(file);
+
+        var success = await creds.InitializeCredentials("[YOUR IDENTIFIER]", "[YOUR PFX PASSWORD]");
+
+
+        if(success.Successfull)
+        {
+            StorageClient cl = new StorageClient("[YOUR SUBSCRIPTION ID]");
+
+            var storageServices = await cl.ListAsync();
+
+            if(storageServices.Successfull)
+            {
+                //Do something here with the data
+            }
+
+        }
+</code></pre>
+
+<p>Then you create a client for the Azure services you want to work with. Currently there are the following clients available (list will be updated):</p>
+
+<ul>
+<li>StorageClient</li>
+</ul><p>After creating the client, you choose the operation, in the code-sample it is the ListAsync() operation, that lists all the storage services available in your subscription.</p>
+
+<p>You can contact me on Twitter: <a href="https://twitter.com/AWSOMEDEVSIGNER" title="@awsomedevsigner">@awsomedevsigner</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Azure Management Client for WinRT maintained by <a href="https://github.com/Injac">Injac</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
