@@ -1,4 +1,4 @@
-## Unofficial Azure Management Client for WinRT ##
+## Azure Management Client for WinRT ##
 
 ## What is it? ##
 
