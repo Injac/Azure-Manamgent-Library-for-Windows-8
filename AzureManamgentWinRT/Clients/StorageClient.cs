@@ -516,31 +516,30 @@ namespace AzureManamgentWinRT.Clients
                 }
 
                 var content = await message.Content.ReadAsStringAsync();
+                              
+                
+                XmlReaderSettings readerSettings = new XmlReaderSettings();
+                readerSettings.Async = true;
+                readerSettings.ConformanceLevel = ConformanceLevel.Auto;
 
-                //Good old school parsing, nothing fancy here
-                int startIndex = content.IndexOf("<Url>") + "<Url>".Length;
-                int endIndex = content.IndexOf("</Url>");
-                int diff = endIndex - startIndex;
+                DataContractSerializer ser = new DataContractSerializer(typeof(StorageServiceReply));
 
-                var url = content.Substring(startIndex, diff);
+                StorageServiceReply result = null;
 
-                startIndex = content.IndexOf("<Primary>") + "<Primary>".Length;
-                endIndex = content.IndexOf("</Primary>");
-                diff = endIndex - startIndex;
+                byte[] byteArray = Encoding.UTF8.GetBytes(content);
+                MemoryStream stream = new MemoryStream(byteArray);
+                stream.Position = 0;
 
-                var primary = content.Substring(startIndex, diff);
-
-                startIndex = content.IndexOf("<Secondary>") + "<Secondary>".Length;
-                endIndex = content.IndexOf("</Secondary>");
-                diff = endIndex - startIndex;
-
-                var secondary = content.Substring(startIndex, diff);
+                using (XmlReader documentReader = XmlReader.Create(stream, readerSettings))
+                {
+                    result = ser.ReadObject(documentReader) as StorageServiceReply;
+                }
 
                 return new StorageKeysResult()
                 {
                     AsyncException = null,
                     Message = string.Format("Access keys for storage account {0} successfully retrieved", storageAccountName),
-                    OperationResult = new StorageServiceReply() { Url = url, StorageKeys = new StorageServiceKeys() { Primary = primary, Secondary = secondary } },
+                    OperationResult = result,
                     Successfull = true
                 };
             }
