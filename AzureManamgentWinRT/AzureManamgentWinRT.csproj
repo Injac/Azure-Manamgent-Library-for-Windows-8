@@ -113,9 +113,12 @@
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
     <Compile Include="Model\Storage\ExtendedProperty.cs" />
     <Compile Include="Model\Storage\LocationNames.cs" />
+    <Compile Include="Model\Storage\RegenerateKeys.cs" />
+    <Compile Include="Model\Storage\StorageAccountKeys.cs" />
     <Compile Include="Model\Storage\StorageAccountNameAvailablitiy.cs" />
     <Compile Include="Model\Storage\StorageService.cs" />
     <Compile Include="Model\Storage\StorageServiceKeys.cs" />
+    <Compile Include="Model\Storage\StorageServiceReply.cs" />
     <Compile Include="Model\Storage\StorageServiceProperties.cs" />
     <Compile Include="Model\Storage\StorageServiceRoot.cs" />
     <Compile Include="Credentials\CertificateCredentials.cs" />

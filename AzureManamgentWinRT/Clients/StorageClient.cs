@@ -36,7 +36,7 @@ namespace AzureManamgentWinRT.Clients
         /// Check the availability of the service.
         /// </summary>
         private const string apiIsAvailableOperation = "/isavailable/{0}";
-                
+                        
         /// <summary>
         /// The base uri for all api calls.
         /// </summary>
@@ -504,18 +504,15 @@ namespace AzureManamgentWinRT.Clients
 
                 var message = await client.GetAsync(this.apiOperationUri);
 
-
-                if(!message.IsSuccessStatusCode)
+                if (!message.IsSuccessStatusCode)
                 {
-
                     return new StorageKeysResult()
                     {
                         AsyncException = null,
-                        Message = String.Format("Could not execute storage key request. Reason {0}",message.ReasonPhrase),
+                        Message = String.Format("Could not execute storage key request. Reason {0}", message.ReasonPhrase),
                         OperationResult = null,
                         Successfull = false
                     };
-
                 }
 
                 var content = await message.Content.ReadAsStringAsync();
@@ -543,7 +540,132 @@ namespace AzureManamgentWinRT.Clients
                 {
                     AsyncException = null,
                     Message = string.Format("Access keys for storage account {0} successfully retrieved", storageAccountName),
-                    OperationResult = new StorageServiceKeys() { Url = url, Primary = primary, Secondary = secondary },
+                    OperationResult = new StorageServiceReply() { Url = url, StorageKeys = new StorageServiceKeys() { Primary = primary, Secondary = secondary } },
+                    Successfull = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = ex,
+                    Message = "An error occured during the storage account key request operation.",
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+        }
+
+        /// <summary>
+        /// Res the generate storage keys async.
+        /// </summary>
+        /// <param name="storageAccountName">Name of the storage account.</param>
+        /// <param name="keyType">Type of the access key to be generatedy.</param>
+        /// <returns></returns>
+        public async Task<StorageKeysResult> ReGenerateStorageKeysAsync(string storageAccountName, StorageAccountKeyType keyType)
+        {
+            if (string.IsNullOrWhiteSpace(storageAccountName) || string.IsNullOrEmpty(storageAccountName))
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Parameter cannot be null {0}",
+                        "storageAccountName"),
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+
+            Regex r = new Regex(@"^[a-z0-9]*$");
+            if (!r.IsMatch(storageAccountName))
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must contain only numbers and lowercase letters. Please check your data",
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+
+            if (storageAccountName.Length > 24 || storageAccountName.Length < 3)
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must be between 3 and 24 characters long.",
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+
+            try
+            {
+                RegenerateKeys keys = null;
+
+                if (keyType == StorageAccountKeyType.Primary)
+                {
+                    keys = new RegenerateKeys() { KeyType = "Primary" };
+                }
+
+                if (keyType == StorageAccountKeyType.Secondary)
+                {
+                    keys = new RegenerateKeys() { KeyType = "Secondary" };
+                }
+
+                var ser = new DataContractSerializer(typeof(RegenerateKeys));
+
+                StringBuilder b = new StringBuilder();
+
+                XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+
+                xmlWriterSettings.Async = true;
+                xmlWriterSettings.Encoding = Encoding.UTF8;
+                xmlWriterSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                xmlWriterSettings.ConformanceLevel = ConformanceLevel.Fragment;
+
+                using (XmlWriter documentWriter = XmlWriter.Create(b, xmlWriterSettings))
+                {
+                    ser.WriteObject(documentWriter, keys);
+
+                    await documentWriter.FlushAsync();
+                }
+
+                var opUrl = string.Format("{0}{1}{2}{3}", apiEndpointListServices, "/", storageAccountName, "/keys?action=regenerate");
+
+                this.InitHttpClient(opUrl, "application/xml");
+
+                HttpContent content = new StringContent(b.ToString());
+
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/xml");
+
+                var message = await this.client.PostAsync(this.apiOperationUri, content);
+
+                var keyReply = await message.Content.ReadAsStringAsync();
+
+                XmlReaderSettings readerSettings = new XmlReaderSettings();
+                readerSettings.Async = true;
+                readerSettings.ConformanceLevel = ConformanceLevel.Auto;
+
+                ser = new DataContractSerializer(typeof(StorageServiceReply));
+
+                StorageServiceReply result = null;
+
+                byte[] byteArray = Encoding.UTF8.GetBytes(keyReply);
+                MemoryStream stream = new MemoryStream(byteArray);
+                stream.Position = 0;
+
+                using (XmlReader documentReader = XmlReader.Create(stream, readerSettings))
+                {
+                    result = ser.ReadObject(documentReader) as StorageServiceReply;
+                }
+
+                return new StorageKeysResult()
+                {
+                    OperationResult = result,
+                    Message = string.Format("{0} successfully re-generated for storage account:{1}",
+                        keyType == StorageAccountKeyType.Primary ? "Primary access key " : "Secondary access key ", storageAccountName),
+                    AsyncException = null,
                     Successfull = true
                 };
             }
@@ -553,7 +675,8 @@ namespace AzureManamgentWinRT.Clients
                 return new StorageKeysResult()
                 {
                     AsyncException = ex,
-                    Message = "An error occured during the storage account key request operation.",
+                    Message = String.Format("An error occured re-generating the access keys for storage account {0}. Please check the AsyncException.", 
+                        storageAccountName),
                     OperationResult = null,
                     Successfull = false
                 };

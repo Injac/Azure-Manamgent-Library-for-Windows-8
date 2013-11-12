@@ -23,12 +23,5 @@ namespace AzureManamgentWinRT.Model.Storage
         /// <value>The secondary.</value>
         [DataMember(Name = "Secondary")]
         public string Secondary { get; set; }
-
-        /// <summary>
-        /// Gets or sets the secondary storage account key.
-        /// </summary>
-        /// <value>The secondary.</value>
-        [DataMember(Name = "Url")]
-        public string Url { get; set; }
     }
 }
