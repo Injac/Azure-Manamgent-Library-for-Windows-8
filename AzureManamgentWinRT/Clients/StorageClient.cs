@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Clients
 {
@@ -434,16 +435,16 @@ namespace AzureManamgentWinRT.Clients
             
             var message = await client.DeleteAsync(this.apiOperationUri);
 
-            if(!message.IsSuccessStatusCode)
+            if (!message.IsSuccessStatusCode)
             {
-                 return new StorageDeleteResult()
-                    {
-                        AsyncException = null,
-                        Message = String.Format("Storage account {0} could not be deleted. Reason {1}. Please check your data.",
-                            storageAccountName, message.ReasonPhrase),
-                        OperationResult = storageAccountName,
-                        Successfull = false
-                    };
+                return new StorageDeleteResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Storage account {0} could not be deleted. Reason {1}. Please check your data.",
+                        storageAccountName, message.ReasonPhrase),
+                    OperationResult = storageAccountName,
+                    Successfull = false
+                };
             }
 
             return new StorageDeleteResult()
@@ -453,6 +454,110 @@ namespace AzureManamgentWinRT.Clients
                 OperationResult = storageAccountName.ToLowerInvariant(),
                 Successfull = true
             };
+        }
+
+        /// <summary>
+        /// Gets the storage account keys async.
+        /// </summary>
+        /// <param name="storageAccountName">Name of the storage account.</param>
+        /// <returns></returns>
+        public async Task<StorageKeysResult> GetStorageAccountKeysAsync(string storageAccountName)
+        {
+            if (string.IsNullOrWhiteSpace(storageAccountName) || string.IsNullOrEmpty(storageAccountName))
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Parameter cannot be null {0}",
+                        "storageAccountName"),
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+
+            Regex r = new Regex(@"^[a-z0-9]*$");
+            if (!r.IsMatch(storageAccountName))
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must contain only numbers and lowercase letters. Please check your data",
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+
+            if (storageAccountName.Length > 24 || storageAccountName.Length < 3)
+            {
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must be between 3 and 24 characters long.",
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
+
+            try
+            {
+                this.InitHttpClient(String.Format("{0}{1}{2}{3}", apiEndpointListServices, "/", storageAccountName.ToLowerInvariant(), "/keys"));
+
+                var message = await client.GetAsync(this.apiOperationUri);
+
+
+                if(!message.IsSuccessStatusCode)
+                {
+
+                    return new StorageKeysResult()
+                    {
+                        AsyncException = null,
+                        Message = String.Format("Could not execute storage key request. Reason {0}",message.ReasonPhrase),
+                        OperationResult = null,
+                        Successfull = false
+                    };
+
+                }
+
+                var content = await message.Content.ReadAsStringAsync();
+
+                //Good old school parsing, nothing fancy here
+                int startIndex = content.IndexOf("<Url>") + "<Url>".Length;
+                int endIndex = content.IndexOf("</Url>");
+                int diff = endIndex - startIndex;
+
+                var url = content.Substring(startIndex, diff);
+
+                startIndex = content.IndexOf("<Primary>") + "<Primary>".Length;
+                endIndex = content.IndexOf("</Primary>");
+                diff = endIndex - startIndex;
+
+                var primary = content.Substring(startIndex, diff);
+
+                startIndex = content.IndexOf("<Secondary>") + "<Secondary>".Length;
+                endIndex = content.IndexOf("</Secondary>");
+                diff = endIndex - startIndex;
+
+                var secondary = content.Substring(startIndex, diff);
+
+                return new StorageKeysResult()
+                {
+                    AsyncException = null,
+                    Message = string.Format("Access keys for storage account {0} successfully retrieved", storageAccountName),
+                    OperationResult = new StorageServiceKeys() { Url = url, Primary = primary, Secondary = secondary },
+                    Successfull = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                return new StorageKeysResult()
+                {
+                    AsyncException = ex,
+                    Message = "An error occured during the storage account key request operation.",
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
         }
 
         /// <summary>

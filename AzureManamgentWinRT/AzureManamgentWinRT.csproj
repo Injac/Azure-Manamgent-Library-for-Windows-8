@@ -107,6 +107,7 @@
     <Compile Include="Clients\StorageAccountNameAvailabilityResult.cs" />
     <Compile Include="Clients\StorageClient.cs" />
     <Compile Include="Clients\StorageDeleteResult.cs" />
+    <Compile Include="Clients\StorageKeysResult.cs" />
     <Compile Include="Clients\StorageListResult.cs" />
     <Compile Include="Clients\StorageServiceCreateResult.cs" />
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Model\Storage\LocationNames.cs" />
     <Compile Include="Model\Storage\StorageAccountNameAvailablitiy.cs" />
     <Compile Include="Model\Storage\StorageService.cs" />
+    <Compile Include="Model\Storage\StorageServiceKeys.cs" />
     <Compile Include="Model\Storage\StorageServiceProperties.cs" />
     <Compile Include="Model\Storage\StorageServiceRoot.cs" />
     <Compile Include="Credentials\CertificateCredentials.cs" />
