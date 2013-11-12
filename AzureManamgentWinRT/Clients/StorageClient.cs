@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -34,7 +35,7 @@ namespace AzureManamgentWinRT.Clients
         /// Check the availability of the service.
         /// </summary>
         private const string apiIsAvailableOperation = "/isavailable/{0}";
-
+                
         /// <summary>
         /// The base uri for all api calls.
         /// </summary>
@@ -270,6 +271,63 @@ namespace AzureManamgentWinRT.Clients
         {
             try
             {
+                if (account == null)
+                {
+                    return new StorageServiceCreateResult()
+                    {
+                        AsyncException = null,
+                        Message = String.Format("Parameter cannot be null {0}",
+                            "account"),
+                        OperationResult = "Parameter null",
+                        Successfull = false
+                    };
+                }
+
+                Regex r = new Regex(@"^[a-z0-9]*$");
+                if (!r.IsMatch(account.ServiceName))
+                {
+                    return new StorageServiceCreateResult()
+                    {
+                        AsyncException = null,
+                        Message = "Storage account name must contain only numbers and lowercase letters. Please check your data",
+                        OperationResult = "Validation error.",
+                        Successfull = false
+                    };
+                }
+
+                if (account.ServiceName.Length > 24 || account.ServiceName.Length < 3)
+                {
+                    return new StorageServiceCreateResult()
+                    {
+                        AsyncException = null,
+                        Message = "Storage account name must be between 3 and 24 characters long.",
+                        OperationResult = "Validation error.",
+                        Successfull = false
+                    };
+                }
+
+                if (account.Label.Length > 100)
+                {
+                    return new StorageServiceCreateResult()
+                    {
+                        AsyncException = null,
+                        Message = "Label must be base64 encoded and cannot be longer than 100 characters.",
+                        OperationResult = "Validation error.",
+                        Successfull = false
+                    };
+                }
+
+                if (account.AffinityGroup != null || account.Location != null)
+                {
+                    return new StorageServiceCreateResult()
+                    {
+                        AsyncException = null,
+                        Message = "You have to choose between affinity group, or location, both is not possible.",
+                        OperationResult = "Validation error.",
+                        Successfull = false
+                    };
+                }
+
                 var ser = new DataContractSerializer(typeof(CreateStorageServiceInput));
 
                 StringBuilder b = new StringBuilder();
@@ -286,8 +344,6 @@ namespace AzureManamgentWinRT.Clients
                     ser.WriteObject(documentWriter, account);
 
                     await documentWriter.FlushAsync();
-
-
                 }
 
                 this.InitHttpClient(apiEndpointListServices, "application/xml");
@@ -298,19 +354,17 @@ namespace AzureManamgentWinRT.Clients
 
                 var message = await this.client.PostAsync(this.apiOperationUri, content);
 
-                if(!message.IsSuccessStatusCode)
+                if (!message.IsSuccessStatusCode)
                 {
                     return new StorageServiceCreateResult()
                     {
                         AsyncException = null,
                         Message = String.Format("Storage service {0} could not be created. Reason {1}. Please check your data.",
-                        account.ServiceName,message.ReasonPhrase),
+                            account.ServiceName, message.ReasonPhrase),
                         OperationResult = account.ServiceName,
                         Successfull = false
                     };
                 }
-                
-
             }
             catch (Exception ex)
             {
@@ -318,18 +372,87 @@ namespace AzureManamgentWinRT.Clients
                 {
                     AsyncException = ex,
                     Message = String.Format("Storage service {0} could not be created.",
-                    account.ServiceName),
+                        account.ServiceName),
                     OperationResult = account.ServiceName,
                     Successfull = false
                 };
             }
 
-            return new StorageServiceCreateResult() { 
-                AsyncException = null, 
-                Message = String.Format("Storage service {0} successfully created", 
-                account.ServiceName), 
-                OperationResult = account.ServiceName, 
-                Successfull = true };
+            return new StorageServiceCreateResult()
+            {
+                AsyncException = null,
+                Message = String.Format("Storage service {0} successfully created",
+                    account.ServiceName),
+                OperationResult = account.ServiceName,
+                Successfull = true
+            };
+        }
+
+        /// <summary>
+        /// Deletes the storage account async.
+        /// </summary>
+        /// <param name="storageAccountName">Name of the storage account.</param>
+        /// <returns></returns>
+        public async Task<StorageDeleteResult> DeleteStorageAccountAsync(string storageAccountName)
+        {
+            if (string.IsNullOrWhiteSpace(storageAccountName) || string.IsNullOrEmpty(storageAccountName))
+            {
+                return new StorageDeleteResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Parameter cannot be null {0}",
+                        "storageAccountName"),
+                    OperationResult = "Parameter null",
+                    Successfull = false
+                };
+            }
+
+            Regex r = new Regex(@"^[a-z0-9]*$");
+            if (!r.IsMatch(storageAccountName))
+            {
+                return new StorageDeleteResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must contain only numbers and lowercase letters. Please check your data",
+                    OperationResult = "Validation error.",
+                    Successfull = false
+                };
+            }
+
+            if (storageAccountName.Length > 24 || storageAccountName.Length < 3)
+            {
+                return new StorageDeleteResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must be between 3 and 24 characters long.",
+                    OperationResult = "Validation error.",
+                    Successfull = false
+                };
+            }
+
+            this.InitHttpClient(String.Format("{0}{1}{2}", apiEndpointListServices, "/", storageAccountName.ToLowerInvariant()));
+            
+            var message = await client.DeleteAsync(this.apiOperationUri);
+
+            if(!message.IsSuccessStatusCode)
+            {
+                 return new StorageDeleteResult()
+                    {
+                        AsyncException = null,
+                        Message = String.Format("Storage account {0} could not be deleted. Reason {1}. Please check your data.",
+                            storageAccountName, message.ReasonPhrase),
+                        OperationResult = storageAccountName,
+                        Successfull = false
+                    };
+            }
+
+            return new StorageDeleteResult()
+            {
+                AsyncException = null,
+                Message = String.Format("Storage account {0} was successfully deleted.", storageAccountName.ToLowerInvariant()),
+                OperationResult = storageAccountName.ToLowerInvariant(),
+                Successfull = true
+            };
         }
 
         /// <summary>
@@ -344,7 +467,6 @@ namespace AzureManamgentWinRT.Clients
             client.DefaultRequestHeaders.Add(this.apiVersionHeaderName, this.apiVersionHeaderValue);
             this.apiOperationUri = new Uri(string.Format(apiBaseUri, this.subscriptionId, apiOperation));
         }
-
        
         /// <summary>
         /// Inits the HTTP client, using a specific media type.
@@ -359,7 +481,7 @@ namespace AzureManamgentWinRT.Clients
             this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
             client.DefaultRequestHeaders.Add(this.apiVersionHeaderName, this.apiVersionHeaderValue);
             this.apiOperationUri = this.apiOperationUri = new Uri(string.Format(apiBaseUri, this.subscriptionId, apiOperation));
-;
+            ;
         }
     }
 }

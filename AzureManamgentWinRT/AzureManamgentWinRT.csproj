@@ -106,6 +106,7 @@
   <ItemGroup>
     <Compile Include="Clients\StorageAccountNameAvailabilityResult.cs" />
     <Compile Include="Clients\StorageClient.cs" />
+    <Compile Include="Clients\StorageDeleteResult.cs" />
     <Compile Include="Clients\StorageListResult.cs" />
     <Compile Include="Clients\StorageServiceCreateResult.cs" />
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
