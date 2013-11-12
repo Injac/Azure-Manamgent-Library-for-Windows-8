@@ -104,8 +104,14 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\StorageAccountNameAvailabilityResult.cs" />
     <Compile Include="Clients\StorageClient.cs" />
     <Compile Include="Clients\StorageListResult.cs" />
+    <Compile Include="Clients\StorageServiceCreateResult.cs" />
+    <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
+    <Compile Include="Model\Storage\ExtendedProperty.cs" />
+    <Compile Include="Model\Storage\LocationNames.cs" />
+    <Compile Include="Model\Storage\StorageAccountNameAvailablitiy.cs" />
     <Compile Include="Model\Storage\StorageService.cs" />
     <Compile Include="Model\Storage\StorageServiceProperties.cs" />
     <Compile Include="Model\Storage\StorageServiceRoot.cs" />
