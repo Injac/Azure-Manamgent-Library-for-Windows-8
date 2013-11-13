@@ -110,6 +110,7 @@
     <Compile Include="Clients\StorageKeysResult.cs" />
     <Compile Include="Clients\StorageListResult.cs" />
     <Compile Include="Clients\StorageServiceCreateResult.cs" />
+    <Compile Include="Clients\UpdateStorageServiceResult.cs" />
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
     <Compile Include="Model\Storage\ExtendedProperty.cs" />
     <Compile Include="Model\Storage\LocationNames.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Model\Storage\StorageServiceRoot.cs" />
     <Compile Include="Credentials\CertificateCredentials.cs" />
     <Compile Include="ErrorHandling\AsyncExecutionResult.cs" />
+    <Compile Include="Model\Storage\UpdateStorageServiceInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

@@ -516,7 +516,6 @@ namespace AzureManamgentWinRT.Clients
                 }
 
                 var content = await message.Content.ReadAsStringAsync();
-                              
                 
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.Async = true;
@@ -670,16 +669,124 @@ namespace AzureManamgentWinRT.Clients
             }
             catch (Exception ex)
             {
-
                 return new StorageKeysResult()
                 {
                     AsyncException = ex,
-                    Message = String.Format("An error occured re-generating the access keys for storage account {0}. Please check the AsyncException.", 
+                    Message = String.Format("An error occured re-generating the access keys for storage account {0}. Please check the AsyncException.",
                         storageAccountName),
                     OperationResult = null,
                     Successfull = false
                 };
             }
+        }
+
+        /// <summary>
+        /// Updates the storage account async.
+        /// </summary>
+        /// <param name="storageServiceName">Name of the storage service.</param>
+        /// <param name="updateInput">The update input.</param>
+        /// <returns></returns>
+        public async Task<UpdateStorageServiceResult> UpdateStorageAccountAsync(string storageServiceName, UpdateStorageServiceInput updateInput)
+        {
+            if (storageServiceName == null)
+            {
+                return new UpdateStorageServiceResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Parameter cannot be null {0}",
+                        "storageServiceName"),
+                    Successfull = false
+                };
+            }
+
+            if (updateInput == null)
+            {
+                return new UpdateStorageServiceResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Parameter cannot be null {0}",
+                        "updateInput"),
+                    Successfull = false
+                };
+            }
+
+            Regex r = new Regex(@"^[a-z0-9]*$");
+            if (!r.IsMatch(storageServiceName))
+            {
+                return new UpdateStorageServiceResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must contain only numbers and lowercase letters. Please check your data",
+                    Successfull = false
+                };
+            }
+
+            if (storageServiceName.Length > 24 || storageServiceName.Length < 3)
+            {
+                return new UpdateStorageServiceResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must be between 3 and 24 characters long.",
+                    Successfull = false
+                };
+            }
+
+            if (storageServiceName.Length > 100)
+            {
+                return new UpdateStorageServiceResult()
+                {
+                    AsyncException = null,
+                    Message = "Label must be base64 encoded and cannot be longer than 100 characters.",
+                    Successfull = false
+                };
+            }
+
+            try
+            {
+                var ser = new DataContractSerializer(typeof(UpdateStorageServiceInput));
+
+                StringBuilder b = new StringBuilder();
+
+                XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+
+                xmlWriterSettings.Async = true;
+                xmlWriterSettings.Encoding = Encoding.UTF8;
+                xmlWriterSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                xmlWriterSettings.ConformanceLevel = ConformanceLevel.Fragment;
+
+                using (XmlWriter documentWriter = XmlWriter.Create(b, xmlWriterSettings))
+                {
+                    ser.WriteObject(documentWriter, updateInput);
+
+                    await documentWriter.FlushAsync();
+                }
+
+                var opUrl = string.Format("{0}{1}{2}", apiEndpointListServices, "/", storageServiceName);
+
+                this.InitHttpClient(opUrl, "application/xml");
+
+                HttpContent content = new StringContent(b.ToString());
+
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/xml");
+
+                var message = await this.client.PutAsync(this.apiOperationUri, content);
+            }
+            catch (Exception ex)
+            {
+                return new UpdateStorageServiceResult()
+                {
+                    AsyncException = ex,
+                    Message = string.Format("Storage account {0} was could not be updated. Please see the AsyncException for more details.", storageServiceName),
+                    Successfull = false
+                };
+            }
+
+            return new UpdateStorageServiceResult()
+            {
+                AsyncException = null,
+                Message = string.Format("Storage account {0} was successfully updated", storageServiceName),
+                Successfull = true
+            };
         }
 
         /// <summary>
