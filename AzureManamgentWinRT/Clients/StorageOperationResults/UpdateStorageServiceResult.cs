@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureManamgentWinRT.Clients
+namespace AzureManamgentWinRT.Clients.StorageOperationResults
 {
     /// <summary>
     /// Used to get informations about

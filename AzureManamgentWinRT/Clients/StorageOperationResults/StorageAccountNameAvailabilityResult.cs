@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureManamgentWinRT.Clients
+namespace AzureManamgentWinRT.Clients.StorageOperationResults
 {
     /// <summary>
-    /// Contains the storage account properties after
-    /// a successfull servicec-call.
+    /// The result returned by the check storage account name
+    /// availability opertation.
     /// </summary>
-    public class StorageAccountPropertiesResult : AsyncExecutionResult
+    public class StorageAccountNameAvailabilityResult : AsyncExecutionResult
     {
         /// <summary>
         /// Gets or sets the operation result.
         /// </summary>
         /// <value>The operation result.</value>
-        public StorageAccountProperties OperationResult { get; set; }
+        public StorageAccountNameAvailablitiy OperationResult { get; set; }
     }
 }

@@ -21,6 +21,6 @@ namespace AzureManamgentWinRT.Model.Storage
         /// </summary>
         /// <value>The storage services.</value>
         [DataMember(Name = "StorageServices")]
-        public List<StorageService> StorageServices { get; set; }
+        public List<StorageAccount> StorageServices { get; set; }
     }
 }

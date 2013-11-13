@@ -1,4 +1,5 @@
-﻿using AzureManamgentWinRT.Model.Storage;
+﻿using AzureManamgentWinRT.Clients.StorageOperationResults;
+using AzureManamgentWinRT.Model.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -100,9 +101,9 @@ namespace AzureManamgentWinRT.Clients
         /// the current subscription.
         /// </summary>
         /// <returns></returns>
-        public async Task<StorageListResult> ListAsync()
+        public async Task<StorageListResult> ListStorageAccountsAsync()
         {
-            var serviceRoot = new StorageServiceRoot() { StorageServices = new List<StorageService>() };
+            var serviceRoot = new StorageServiceRoot() { StorageServices = new List<StorageAccount>() };
 
             try
             {
@@ -131,7 +132,7 @@ namespace AzureManamgentWinRT.Clients
 
                 foreach (XElement service in storageServices.Elements(wa + "StorageService"))
                 {
-                    var srv = new StorageService()
+                    var srv = new StorageAccount()
                     {
                         Url = service.Element(wa + "Url").Value,
                         ServiceName = service.Element(wa + "ServiceName").Value,
@@ -707,12 +708,12 @@ namespace AzureManamgentWinRT.Clients
         /// <summary>
         /// Updates the storage account async.
         /// </summary>
-        /// <param name="storageServiceName">Name of the storage service.</param>
+        /// <param name="storageAccountName">Name of the storage service.</param>
         /// <param name="updateInput">The update input.</param>
         /// <returns></returns>
-        public async Task<UpdateStorageServiceResult> UpdateStorageAccountAsync(string storageServiceName, UpdateStorageServiceInput updateInput)
+        public async Task<UpdateStorageServiceResult> UpdateStorageAccountAsync(string storageAccountName, UpdateStorageServiceInput updateInput)
         {
-            if (string.IsNullOrEmpty(storageServiceName) || string.IsNullOrWhiteSpace(storageServiceName))
+            if (string.IsNullOrEmpty(storageAccountName) || string.IsNullOrWhiteSpace(storageAccountName))
             {
                 return new UpdateStorageServiceResult()
                 {
@@ -735,7 +736,7 @@ namespace AzureManamgentWinRT.Clients
             }
 
             Regex r = new Regex(@"^[a-z0-9]*$");
-            if (!r.IsMatch(storageServiceName))
+            if (!r.IsMatch(storageAccountName))
             {
                 return new UpdateStorageServiceResult()
                 {
@@ -745,7 +746,7 @@ namespace AzureManamgentWinRT.Clients
                 };
             }
 
-            if (storageServiceName.Length > 24 || storageServiceName.Length < 3)
+            if (storageAccountName.Length > 24 || storageAccountName.Length < 3)
             {
                 return new UpdateStorageServiceResult()
                 {
@@ -755,7 +756,7 @@ namespace AzureManamgentWinRT.Clients
                 };
             }
 
-            if (storageServiceName.Length > 100)
+            if (storageAccountName.Length > 100)
             {
                 return new UpdateStorageServiceResult()
                 {
@@ -785,7 +786,7 @@ namespace AzureManamgentWinRT.Clients
                     await documentWriter.FlushAsync();
                 }
 
-                var opUrl = string.Format("{0}{1}{2}", apiEndpointListServices, "/", storageServiceName);
+                var opUrl = string.Format("{0}{1}{2}", apiEndpointListServices, "/", storageAccountName);
 
                 this.InitHttpClient(opUrl, "application/xml");
 
@@ -800,7 +801,7 @@ namespace AzureManamgentWinRT.Clients
                     return new UpdateStorageServiceResult()
                     {
                         AsyncException = null,
-                        Message = string.Format("Error occured during storage account property retrieval. For storage account {0}. Reason {1}", storageServiceName, message.ReasonPhrase),
+                        Message = string.Format("Error occured during storage account property retrieval. For storage account {0}. Reason {1}", storageAccountName, message.ReasonPhrase),
                         Successfull = false
                     };
                 }
@@ -810,7 +811,7 @@ namespace AzureManamgentWinRT.Clients
                 return new UpdateStorageServiceResult()
                 {
                     AsyncException = ex,
-                    Message = string.Format("Storage account {0} was could not be updated. Please see the AsyncException for more details.", storageServiceName),
+                    Message = string.Format("Storage account {0} was could not be updated. Please see the AsyncException for more details.", storageAccountName),
                     Successfull = false
                 };
             }
@@ -818,7 +819,7 @@ namespace AzureManamgentWinRT.Clients
             return new UpdateStorageServiceResult()
             {
                 AsyncException = null,
-                Message = string.Format("Storage account {0} was successfully updated", storageServiceName),
+                Message = string.Format("Storage account {0} was successfully updated", storageAccountName),
                 Successfull = true
             };
         }

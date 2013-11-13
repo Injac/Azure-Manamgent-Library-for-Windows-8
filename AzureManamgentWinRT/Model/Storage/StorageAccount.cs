@@ -13,7 +13,7 @@ namespace AzureManamgentWinRT.Model.Storage
     /// by Windows Azure.
     /// </summary>
     [DataContract]
-    public class StorageService
+    public class StorageAccount
     {
         /// <summary>
         /// Gets or sets the URL.

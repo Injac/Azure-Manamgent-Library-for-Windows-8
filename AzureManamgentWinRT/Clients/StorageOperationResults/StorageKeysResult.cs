@@ -6,17 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureManamgentWinRT.Clients
+namespace AzureManamgentWinRT.Clients.StorageOperationResults
 {
     /// <summary>
-    /// The result returned by the storage list operation.
+    /// Contains the storage account access keys,
+    /// after the accesss key request.
     /// </summary>
-    public class StorageListResult : AsyncExecutionResult
+    public class StorageKeysResult : AsyncExecutionResult
     {
         /// <summary>
         /// Gets or sets the operation result.
         /// </summary>
         /// <value>The operation result.</value>
-        public StorageServiceRoot OperationResult { get; set; }
+        public StorageServiceReply OperationResult { get; set; }
     }
 }

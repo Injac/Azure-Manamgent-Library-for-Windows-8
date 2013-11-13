@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureManamgentWinRT.Clients
+namespace AzureManamgentWinRT.Clients.StorageOperationResults
 {
-    
     /// <summary>
     /// The result returned by service creation.
     /// </summary>
