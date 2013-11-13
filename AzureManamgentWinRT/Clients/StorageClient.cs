@@ -109,6 +109,18 @@ namespace AzureManamgentWinRT.Clients
                 this.InitHttpClient(apiEndpointListServices);
 
                 var result = await client.GetAsync(apiOperationUri, HttpCompletionOption.ResponseContentRead);
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    return new StorageListResult()
+                    {
+                        AsyncException = null,
+                        Message = string.Format("An error occured, during the request to retrieve a list of all storage services. Reason: {0}", result.ReasonPhrase),
+                        OperationResult = null,
+                        Successfull = false
+                    };
+                }
+
                 var responseContent = await result.Content.ReadAsStringAsync();
 
                 XDocument doc = XDocument.Parse(responseContent);
@@ -639,6 +651,18 @@ namespace AzureManamgentWinRT.Clients
 
                 var message = await this.client.PostAsync(this.apiOperationUri, content);
 
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new StorageKeysResult()
+                    {
+                        AsyncException = null,
+                        Message = String.Format("An error occured during the request  to re-generate the access keys for storage account {0}. Reason phrase {1}",
+                            storageAccountName, message.ReasonPhrase),
+                        OperationResult = null,
+                        Successfull = false
+                    };
+                }
+
                 var keyReply = await message.Content.ReadAsStringAsync();
 
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
@@ -688,7 +712,7 @@ namespace AzureManamgentWinRT.Clients
         /// <returns></returns>
         public async Task<UpdateStorageServiceResult> UpdateStorageAccountAsync(string storageServiceName, UpdateStorageServiceInput updateInput)
         {
-            if (storageServiceName == null)
+            if (string.IsNullOrEmpty(storageServiceName) || string.IsNullOrWhiteSpace(storageServiceName))
             {
                 return new UpdateStorageServiceResult()
                 {
@@ -770,6 +794,16 @@ namespace AzureManamgentWinRT.Clients
                 content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/xml");
 
                 var message = await this.client.PutAsync(this.apiOperationUri, content);
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new UpdateStorageServiceResult()
+                    {
+                        AsyncException = null,
+                        Message = string.Format("Error occured during storage account property retrieval. For storage account {0}. Reason {1}", storageServiceName, message.ReasonPhrase),
+                        Successfull = false
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -787,6 +821,145 @@ namespace AzureManamgentWinRT.Clients
                 Message = string.Format("Storage account {0} was successfully updated", storageServiceName),
                 Successfull = true
             };
+        }
+
+        /// <summary>
+        /// Gets the storage account properties async.
+        /// </summary>
+        /// <param name="storageAccountName">Name of the storage account.</param>
+        /// <returns></returns>
+        public async Task<StorageAccountPropertiesResult> GetStorageAccountPropertiesAsync(string storageAccountName)
+        {
+            if (storageAccountName == null || string.IsNullOrEmpty(storageAccountName) || string.IsNullOrWhiteSpace(storageAccountName))
+            {
+                return new StorageAccountPropertiesResult()
+                {
+                    AsyncException = null,
+                    Message = String.Format("Parameter cannot be null {0}",
+                        "storageAccountName"),
+                    Successfull = false
+                };
+            }
+
+            Regex r = new Regex(@"^[a-z0-9]*$");
+            if (!r.IsMatch(storageAccountName))
+            {
+                return new StorageAccountPropertiesResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must contain only numbers and lowercase letters. Please check your data",
+                    Successfull = false
+                };
+            }
+
+            if (storageAccountName.Length > 24 || storageAccountName.Length < 3)
+            {
+                return new StorageAccountPropertiesResult()
+                {
+                    AsyncException = null,
+                    Message = "Storage account name must be between 3 and 24 characters long.",
+                    Successfull = false
+                };
+            }
+            
+            StringBuilder b = new StringBuilder();
+
+            var opUrl = string.Format("{0}{1}{2}", apiEndpointListServices, "/", storageAccountName);
+
+            this.InitHttpClient(opUrl);
+
+            var message = await this.client.GetAsync(this.apiOperationUri);
+
+            if (!message.IsSuccessStatusCode)
+            {
+                return new StorageAccountPropertiesResult()
+                {
+                    AsyncException = null,
+                    Message = string.Format("Error occured during storage account property retrieval. For storage account {0}. Reason {1}", storageAccountName, message.ReasonPhrase),
+                    OperationResult = null
+                };
+            }
+
+            var storagePropertyReply = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            try
+            {
+                StorageAccountProperties serviceProperties = new StorageAccountProperties();
+                serviceProperties.StorageServiceProperties = new StorageAccountPropertiesPropCall();
+                serviceProperties.StorageServiceProperties.EndPoints = new List<string>();
+                serviceProperties.ExtendedProperties = new Dictionary<string, object>();
+                serviceProperties.Capabilities = new List<string>();
+
+                XDocument doc = XDocument.Parse(storagePropertyReply);
+
+                var storageService = doc.Element(XName.Get("StorageService", nameSpace));
+
+                serviceProperties.ServiceName = storageService.Element(XName.Get("ServiceName", nameSpace)).Value;
+                serviceProperties.Url = storageService.Element(XName.Get("Url", nameSpace)).Value;
+
+                var serviceProps = storageService.Element(XName.Get("StorageServiceProperties", nameSpace));
+
+                serviceProperties.StorageServiceProperties.Description = serviceProps.Element(XName.Get("Description", nameSpace)).Value;
+                serviceProperties.StorageServiceProperties.AffinityGroup = serviceProps.Element(XName.Get("AffinityGroup", nameSpace)) != null ? serviceProps.Element(XName.Get("AffinityGroup", nameSpace)).Value : "";
+                serviceProperties.StorageServiceProperties.Location = serviceProps.Element(XName.Get("Location", nameSpace)).Value;
+                serviceProperties.StorageServiceProperties.Label = serviceProps.Element(XName.Get("Label", nameSpace)) != null ? Encoding.UTF8.GetString(Convert.FromBase64String(serviceProps.Element(XName.Get("Label", nameSpace)).Value), 0, Convert.FromBase64String(serviceProps.Element(XName.Get("Label", nameSpace)).Value).Length) : "";
+                serviceProperties.StorageServiceProperties.Status = serviceProps.Element(XName.Get("Status", nameSpace)).Value;
+
+                var endPoints = serviceProps.Element(XName.Get("Endpoints", nameSpace));
+
+                foreach (XElement endpoint in endPoints.Elements(XName.Get("Endpoint", nameSpace)))
+                {
+                    serviceProperties.StorageServiceProperties.EndPoints.Add(endpoint.Value);
+                }
+
+                serviceProperties.StorageServiceProperties.GeoReplicationEnabled = Convert.ToBoolean(serviceProps.Element(XName.Get("GeoReplicationEnabled", nameSpace)).Value);
+                serviceProperties.StorageServiceProperties.GeoPrimaryRegion = serviceProps.Element(XName.Get("GeoPrimaryRegion", nameSpace)).Value;
+                serviceProperties.StorageServiceProperties.StatusOfPrimary = serviceProps.Element(XName.Get("StatusOfPrimary", nameSpace)).Value;
+                serviceProperties.StorageServiceProperties.LastGeoFailoverTime =
+                                                                                serviceProps.Element(XName.Get("LastGeoFailoverTime", nameSpace)) != null ? serviceProps.Element(XName.Get("LastGeoFailoverTime", nameSpace)).Value : null;
+                serviceProperties.StorageServiceProperties.GeoSecondaryRegion = serviceProps.Element(XName.Get("GeoSecondaryRegion", nameSpace)).Value;
+                serviceProperties.StorageServiceProperties.StatusOfSecondary = serviceProps.Element(XName.Get("StatusOfSecondary", nameSpace)).Value;
+
+                var extendedServiceProps = storageService.Element(XName.Get("ExtendedProperties", nameSpace));
+
+                if (extendedServiceProps != null)
+                {
+                    foreach (XElement extendedProperty in extendedServiceProps.Elements(XName.Get("ExtendedProperty", nameSpace)))
+                    {
+                        serviceProperties.ExtendedProperties.Add(
+                            extendedProperty.Element(XName.Get("Name", nameSpace)).Value,
+                            extendedProperty.Element(XName.Get("Value", nameSpace)).Value);
+                    }
+                }
+
+                var extendedServiceCaps = storageService.Element(XName.Get("Capabilities", nameSpace));
+
+                if (extendedServiceCaps != null)
+                {
+                    foreach (XElement capability in extendedServiceCaps.Elements(XName.Get("Capability", nameSpace)))
+                    {
+                        serviceProperties.Capabilities.Add(capability.Value);
+                    }
+                }
+
+                return new StorageAccountPropertiesResult()
+                {
+                    AsyncException = null,
+                    Message = string.Format("Successfully retrieved properties for storage account {0}", storageAccountName),
+                    OperationResult = serviceProperties,
+                    Successfull = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new StorageAccountPropertiesResult()
+                {
+                    AsyncException = ex,
+                    Message = string.Format("Error occured during retrieval of properties for storage account {0}. Please see AsyncException for further informations.", storageAccountName),
+                    OperationResult = null,
+                    Successfull = false
+                };
+            }
         }
 
         /// <summary>
