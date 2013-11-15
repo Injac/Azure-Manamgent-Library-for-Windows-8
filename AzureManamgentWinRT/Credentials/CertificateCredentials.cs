@@ -1,11 +1,7 @@
 ﻿using AzureManamgentWinRT.ErrorHandling;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.Security.Cryptography.Certificates;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -80,7 +76,7 @@ namespace AzureManamgentWinRT.Credentials
             {
                 string base64Encoded = Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(content);
 
-                await CertificateEnrollmentManager.ImportPfxDataAsync(
+                await CertificateEnrollmentManager.UserCertificateEnrollmentManager.ImportPfxDataAsync(
                     base64Encoded,
                     credentialPassword,
                     ExportOption.NotExportable,

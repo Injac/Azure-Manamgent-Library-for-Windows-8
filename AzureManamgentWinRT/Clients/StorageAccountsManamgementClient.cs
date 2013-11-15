@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Clients
 {
@@ -20,7 +19,7 @@ namespace AzureManamgentWinRT.Clients
     /// Client to get information about
     /// the available storage services.
     /// </summary>
-    public class StorageClient
+    public class StorageAccountsManamgementClient : ManagmentClientBase
     {
         /// <summary>
         /// The api endpoint to list all available storage services.
@@ -37,47 +36,12 @@ namespace AzureManamgentWinRT.Clients
         /// Check the availability of the service.
         /// </summary>
         private const string apiIsAvailableOperation = "/isavailable/{0}";
-                        
-        /// <summary>
-        /// The base uri for all api calls.
-        /// </summary>
-        private readonly string apiBaseUri = "https://management.core.windows.net//{0}/{1}";
-
-        /// <summary>
-        /// The namespace for the return XML.
-        /// </summary>
-        private readonly string nameSpace = "http://schemas.microsoft.com/windowsazure";
-
-        /// <summary>
-        /// The api header version-identifier.
-        /// </summary>
-        private readonly string apiVersionHeaderName = "x-ms-version";
-
-        /// <summary>
-        /// The api version.
-        /// </summary>
-        private readonly string apiVersionHeaderValue = "2013-03-01";
-
-        /// <summary>
-        /// The subscription id.
-        /// </summary>
-        private string subscriptionId;
-
-        /// <summary>
-        /// Api operation URI
-        /// </summary>
-        private Uri apiOperationUri;
-
-        /// <summary>
-        /// HttpClient for the API calls.
-        /// </summary>
-        private HttpClient client;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="StorageClient" /> class.
         /// </summary>
         /// <param name="subscriptionId">The subscription id.</param>
-        public StorageClient(string subscriptionId)
+        public StorageAccountsManamgementClient(string subscriptionId)
         {
             if (string.IsNullOrEmpty(subscriptionId) || string.IsNullOrWhiteSpace(subscriptionId))
             {
@@ -141,23 +105,29 @@ namespace AzureManamgentWinRT.Clients
 
                     foreach (XElement property in service.Elements(wa + "StorageServiceProperties"))
                     {
-                        srv.ServiceProperties.Description = property.Element(wa + "Description").Value;
-                        srv.ServiceProperties.Location = property.Element(wa + "Location").Value;
-                        srv.ServiceProperties.Label = property.Element(wa + "Label").Value;
+                        srv.ServiceProperties.Description = property.Element(wa + "Description") != null ? property.Element(wa + "Description").Value : "";
+                        srv.ServiceProperties.Location = property.Element(wa + "Location") != null ? property.Element(wa + "Location").Value : "";
+                        srv.ServiceProperties.Label = property.Element(wa + "Label") != null ? property.Element(wa + "Label").Value : "";
                         srv.ServiceProperties.Status = property.Element(wa + "Status").Value;
-                        srv.ServiceProperties.GeoPrimaryRegion = property.Element(wa + "GeoPrimaryRegion").Value;
+                        srv.ServiceProperties.GeoPrimaryRegion = property.Element(wa + "GeoPrimaryRegion") != null ? property.Element(wa + "GeoPrimaryRegion").Value : "";
                         srv.ServiceProperties.GeoReplicationEnabled = Convert.ToBoolean(property.Element(wa + "GeoReplicationEnabled").Value);
-                        srv.ServiceProperties.GeoSecondaryRegion = property.Element(wa + "GeoSecondaryRegion").Value;
+                        srv.ServiceProperties.GeoSecondaryRegion = property.Element(wa + "GeoSecondaryRegion") != null ? property.Element(wa + "GeoSecondaryRegion").Value : "";
                         srv.ServiceProperties.Created = DateTime.Parse(property.Element(wa + "CreationTime").Value);
 
-                        foreach (XElement endpoint in property.Elements(wa + "Endpoints").Descendants(wa + "Endpoint"))
+                        if (property.Elements(wa + "Endpoints") != null)
                         {
-                            srv.ServiceProperties.EndPoints.Add(endpoint.Value);
+                            foreach (XElement endpoint in property.Elements(wa + "Endpoints").Descendants(wa + "Endpoint"))
+                            {
+                                srv.ServiceProperties.EndPoints.Add(endpoint.Value);
+                            }
                         }
 
-                        foreach (XElement extProperty in property.Elements(wa + "ExtendedProperties").Descendants(wa + "ExtendedProperty"))
+                        if (property.Elements(wa + "ExtendedProperties") != null)
                         {
-                            srv.ServiceProperties.ExtendedProperties.Add(extProperty.Element(wa + "Name").Value, extProperty.Element(wa + "Value"));
+                            foreach (XElement extProperty in property.Elements(wa + "ExtendedProperties").Descendants(wa + "ExtendedProperty"))
+                            {
+                                srv.ServiceProperties.ExtendedProperties.Add(extProperty.Element(wa + "Name").Value, extProperty.Element(wa + "Value"));
+                            }
                         }
                     }
 
@@ -961,35 +931,6 @@ namespace AzureManamgentWinRT.Clients
                     Successfull = false
                 };
             }
-        }
-
-        /// <summary>
-        /// Inits the HTTP client.
-        /// </summary>
-        /// <param name="apiOperation">The API operation.</param>
-        private void InitHttpClient(string apiOperation)
-        {
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Automatic;
-            this.client = new HttpClient(handler);
-            client.DefaultRequestHeaders.Add(this.apiVersionHeaderName, this.apiVersionHeaderValue);
-            this.apiOperationUri = new Uri(string.Format(apiBaseUri, this.subscriptionId, apiOperation));
-        }
-       
-        /// <summary>
-        /// Inits the HTTP client, using a specific media type.
-        /// </summary>
-        /// <param name="apiOperation">The API operation.</param>
-        /// <param name="contentType">Type of the content.</param>
-        private void InitHttpClient(string apiOperation, string contentType)
-        {
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.ClientCertificateOptions = ClientCertificateOption.Automatic;
-            this.client = new HttpClient(handler);
-            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
-            client.DefaultRequestHeaders.Add(this.apiVersionHeaderName, this.apiVersionHeaderValue);
-            this.apiOperationUri = this.apiOperationUri = new Uri(string.Format(apiBaseUri, this.subscriptionId, apiOperation));
-            ;
         }
     }
 }

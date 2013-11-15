@@ -101,17 +101,19 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Clients\CloudServicesManagmentClient.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\AddCloudServiceExtensionOperationResult.cs" />
+    <Compile Include="Clients\Helper\SerializationHelper.cs" />
+    <Compile Include="Clients\ManagmentClientBase.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageAccountPropertiesResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageAccountNameAvailabilityResult.cs" />
-    <Compile Include="Clients\StorageClient.cs" />
+    <Compile Include="Clients\StorageAccountsManamgementClient.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageDeleteResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageKeysResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageListResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageServiceCreateResult.cs" />
     <Compile Include="Clients\StorageOperationResults\UpdateStorageServiceResult.cs" />
+    <Compile Include="Model\CloudServices\CloudServiceExtension.cs" />
     <Compile Include="Model\Storage\CapabilityEntry.cs" />
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
     <Compile Include="Model\Storage\ExtendedProperty.cs" />
