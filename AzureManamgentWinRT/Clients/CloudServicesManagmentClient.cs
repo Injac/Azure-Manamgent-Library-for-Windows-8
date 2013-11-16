@@ -22,6 +22,42 @@ namespace AzureManamgentWinRT.Clients
         /// </summary>
         private const string addExtensionOperation = "/services/hostedservices/{0}/extensions";
 
+        /// <summary>
+        /// Lis all available cloud extensions.
+        /// </summary>
+        private const string listAvailableExtensionsOperation = "/services/extensions";
+
+
+       
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CloudServicesManagmentClient" /> class.
+        /// </summary>
+        /// <param name="subscriptionId">The subscription id.</param>
+        public CloudServicesManagmentClient(string subscriptionId)
+        {
+            if (string.IsNullOrEmpty(subscriptionId) || string.IsNullOrWhiteSpace(subscriptionId))
+            {
+                throw new ArgumentException("Subscription id cannot be null or empty.", "subscriptionId");
+            }
+
+            Guid id;
+            
+            var isGuid = Guid.TryParse(subscriptionId, out id);
+
+            if (!isGuid)
+            {
+                throw new ArgumentException("Subscription format unknown.", "subscriptionId");
+            }
+
+            this.subscriptionId = subscriptionId;
+        }
+
+        /// <summary>
+        /// Adds the extension async.
+        /// </summary>
+        /// <param name="cloudService">The cloud service.</param>
+        /// <param name="extension">The extension.</param>
+        /// <returns></returns>
         public async Task<AddCloudServiceExtensionOperationResult> AddExtensionAsync(string cloudService, CloudServiceExtension extension)
         {
             if (string.IsNullOrEmpty(cloudService) || string.IsNullOrWhiteSpace(cloudService))
@@ -74,7 +110,6 @@ namespace AzureManamgentWinRT.Clients
                     Message = string.Format("An error occured during the execution of AddExtensionAsync for cloud serivce {0}. Please see the AsyncException for further details.", cloudService),
                     Successfull = false
                 };
-                
             }
 
             return new AddCloudServiceExtensionOperationResult()
@@ -83,6 +118,56 @@ namespace AzureManamgentWinRT.Clients
                 Message = string.Format("Successfully added extension type {0} to cloud service {1}", extension.Type, cloudService),
                 Successfull = true
             };
+        }
+
+        /// <summary>
+        /// Lists the available extensions async.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ListAvailableExtensionsOperationResult> ListAvailableExtensionsAsync()
+        {
+            try
+            {
+
+                this.InitHttpClient(listAvailableExtensionsOperation);
+
+                var message = await this.client.GetAsync(this.apiOperationUri);
+
+                if(!message.IsSuccessStatusCode)
+                {
+                    return new ListAvailableExtensionsOperationResult()
+                    {
+                        AsyncException = null,
+                        Message = string.Format("API call failed. Reason {0}.",message.ReasonPhrase),
+                        OperationResult = null,
+                        Successfull = false
+                    };
+                }
+
+                var xmlReply = await message.Content.ReadAsStringAsync();
+
+                var availableExtensions = SerializationHelper.DataContractDesirializeXmlFragment<CloudServiceExtensionImagesRoot>(xmlReply, "ExtensionImages", "http://schemas.microsoft.com/windowsazure");
+
+               
+                return new ListAvailableExtensionsOperationResult()
+                {
+                    AsyncException = null,
+                    Message = "Successfully listed all available cloud service extensions.",
+                    OperationResult = availableExtensions,
+                    Successfull = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                return new ListAvailableExtensionsOperationResult()
+                {
+                    AsyncException = ex,
+                    Message = "An error occured trying to list all available cloud service extentions. Please see the AsnycException property for more details.",
+                    OperationResult = null,
+                    Successfull = true
+                };
+            }
         }
     }
 }

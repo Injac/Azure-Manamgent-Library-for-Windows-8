@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="Clients\CloudServicesManagmentClient.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\AddCloudServiceExtensionOperationResult.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\ListAvailableExtensionsOperationResult.cs" />
     <Compile Include="Clients\Helper\SerializationHelper.cs" />
     <Compile Include="Clients\ManagmentClientBase.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageAccountPropertiesResult.cs" />
@@ -113,7 +114,9 @@
     <Compile Include="Clients\StorageOperationResults\StorageListResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageServiceCreateResult.cs" />
     <Compile Include="Clients\StorageOperationResults\UpdateStorageServiceResult.cs" />
+    <Compile Include="Model\CloudServices\CloudServiceExtensionImage.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtension.cs" />
+    <Compile Include="Model\CloudServices\CloudServiceExtensionImagesRoot.cs" />
     <Compile Include="Model\Storage\CapabilityEntry.cs" />
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
     <Compile Include="Model\Storage\ExtendedProperty.cs" />

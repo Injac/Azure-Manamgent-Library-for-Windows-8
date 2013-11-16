@@ -76,7 +76,7 @@ namespace AzureManamgentWinRT.Credentials
             {
                 string base64Encoded = Windows.Security.Cryptography.CryptographicBuffer.EncodeToBase64String(content);
 
-                await CertificateEnrollmentManager.UserCertificateEnrollmentManager.ImportPfxDataAsync(
+                await CertificateEnrollmentManager.ImportPfxDataAsync(
                     base64Encoded,
                     credentialPassword,
                     ExportOption.NotExportable,
