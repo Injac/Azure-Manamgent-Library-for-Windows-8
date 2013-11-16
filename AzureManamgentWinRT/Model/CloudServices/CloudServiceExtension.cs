@@ -35,7 +35,7 @@ namespace AzureManamgentWinRT.Model.CloudServices
         /// Gets or sets the thumbprint.
         /// </summary>
         /// <value>The thumbprint.</value>
-        [DataMember(Name = "Thumbprint", IsRequired = true, EmitDefaultValue = false, Order = 3)]
+        [DataMember(Name = "Thumbprint", IsRequired = false, EmitDefaultValue = false, Order = 3)]
         public string Thumbprint { get; set; }
       
         /// <summary>

@@ -34,6 +34,10 @@ namespace AzureManamgentWinRT.Clients
         /// </summary>
         protected readonly string apiVersionHeaderValue = "2013-03-01";
 
+        /// <summary>
+        /// Xml doc intro.
+        /// </summary>
+        protected readonly string xmlIntro = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
         /// <summary>
         /// The subscription id.
@@ -95,8 +99,6 @@ namespace AzureManamgentWinRT.Clients
             this.client = new HttpClient(handler);
             client.DefaultRequestHeaders.Add(this.apiVersionHeaderName, this.apiVersionHeaderValue);
             client.DefaultRequestHeaders.IfModifiedSince = DateTime.UtcNow;
-            // client.DefaultRequestHeaders.CacheControl.NoStore = true;
-            //client.DefaultRequestHeaders.CacheControl.NoCache = true;
             this.apiOperationUri = new Uri(string.Format(apiBaseUri, this.subscriptionId, apiOperation));
         }
 
@@ -109,10 +111,8 @@ namespace AzureManamgentWinRT.Clients
         {
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Automatic;
+            
             this.client = new HttpClient(handler);
-            client.DefaultRequestHeaders.IfModifiedSince = DateTime.UtcNow;
-            //client.DefaultRequestHeaders.CacheControl.NoStore = true;
-            client.DefaultRequestHeaders.CacheControl.NoCache = true;
             this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
             client.DefaultRequestHeaders.Add(this.apiVersionHeaderName, this.apiVersionHeaderValue);
             this.apiOperationUri = this.apiOperationUri = new Uri(string.Format(apiBaseUri, this.subscriptionId, apiOperation));

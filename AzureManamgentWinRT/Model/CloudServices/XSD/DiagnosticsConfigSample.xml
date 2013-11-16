@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
+  <StorageAccount>
+    <ConnectionQualifiers>ConnectionQualifiers1</ConnectionQualifiers>
+    <DefaultEndpointsProtocol>https</DefaultEndpointsProtocol>
+    <Name>Name1</Name>
+  </StorageAccount>
+  <WadCfg>
+    <DiagnosticMonitorConfiguration configurationChangePollInterval="PT1M" overallQuotaInMB="4000">
+      <WindowsEventLog scheduledTransferLogLevelFilter="Undefined" bufferQuotaInMB="0" scheduledTransferPeriod="PT0S">
+        <DataSource name="name1" />
+        <DataSource name="name2" />
+        <DataSource name="name3" />
+      </WindowsEventLog>
+      <PerformanceCounters bufferQuotaInMB="0" scheduledTransferPeriod="PT0S">
+        <PerformanceCounterConfiguration counterSpecifier="counterSpecifier1" sampleRate="PT0S" />
+        <PerformanceCounterConfiguration counterSpecifier="counterSpecifier2" sampleRate="P10675199DT2H48M5.477S" />
+        <PerformanceCounterConfiguration counterSpecifier="counterSpecifier3" sampleRate="P365D" />
+      </PerformanceCounters>
+      <Logs scheduledTransferLogLevelFilter="Undefined" bufferQuotaInMB="0" scheduledTransferPeriod="PT0S" />
+      <Directories bufferQuotaInMB="0" scheduledTransferPeriod="PT0S">
+        <DataSources>
+          <DirectoryConfiguration container="container1" directoryQuotaInMB="0">
+            <Absolute path="path1" expandEnvironment="true" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container2" directoryQuotaInMB="0">
+            <Absolute path="path2" expandEnvironment="false" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container3" directoryQuotaInMB="4294967295">
+            <Absolute path="path3" expandEnvironment="true" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container4" directoryQuotaInMB="1">
+            <Absolute path="path4" expandEnvironment="false" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container5" directoryQuotaInMB="4294967294">
+            <Absolute path="path5" expandEnvironment="true" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container6" directoryQuotaInMB="2">
+            <Absolute path="path6" expandEnvironment="false" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container7" directoryQuotaInMB="4294967293">
+            <Absolute path="path7" expandEnvironment="true" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container8" directoryQuotaInMB="3">
+            <Absolute path="path8" expandEnvironment="false" />
+          </DirectoryConfiguration>
+          <DirectoryConfiguration container="container9" directoryQuotaInMB="4294967292">
+            <Absolute path="path9" expandEnvironment="true" />
+          </DirectoryConfiguration>
+        </DataSources>
+        <CrashDumps container="container1" directoryQuotaInMB="0" />
+        <FailedRequestLogs container="container1" directoryQuotaInMB="0" />
+        <IISLogs container="container1" directoryQuotaInMB="0" />
+      </Directories>
+      <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter="Undefined" bufferQuotaInMB="0" scheduledTransferPeriod="PT0S" />
+    </DiagnosticMonitorConfiguration>
+  </WadCfg>
+</PublicConfig>

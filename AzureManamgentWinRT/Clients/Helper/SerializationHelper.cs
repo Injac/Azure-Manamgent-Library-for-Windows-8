@@ -37,7 +37,94 @@ namespace AzureManamgentWinRT.Clients.Helper
         }
 
        
+        /// <summary>
+        /// Datas the contract serializer fragment.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public static async Task<string> DataContractSerializerFragment<T>(T item)
+        {
+            var ser = new DataContractSerializer(typeof(T));
 
+            StringBuilder b = new StringBuilder();
+
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+
+            xmlWriterSettings.Async = true;
+            xmlWriterSettings.Encoding = Encoding.UTF8;
+            xmlWriterSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+            xmlWriterSettings.ConformanceLevel = ConformanceLevel.Fragment;
+
+            using (XmlWriter documentWriter = XmlWriter.Create(b, xmlWriterSettings))
+            {
+                ser.WriteObject(documentWriter, item);
+
+                await documentWriter.FlushAsync();
+            }
+
+            var content = b.ToString().Replace("xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"", "");
+
+            return content;
+        }
+
+        /// <summary>
+        /// Datas the contract serializer document.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public static async Task<string> DataContractSerializerDocument<T>(T item)
+        {
+            var ser = new DataContractSerializer(typeof(T));
+
+            StringBuilder b = new StringBuilder();
+
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+
+            xmlWriterSettings.Async = true;
+            xmlWriterSettings.Encoding = Encoding.UTF8;
+            xmlWriterSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+            xmlWriterSettings.ConformanceLevel = ConformanceLevel.Document;
+
+            using (XmlWriter documentWriter = XmlWriter.Create(b, xmlWriterSettings))
+            {
+                ser.WriteObject(documentWriter, item);
+
+                await documentWriter.FlushAsync();
+            }
+
+            return b.ToString().Replace("utf-16", "utf-8");;
+        }
+
+        /// <summary>
+        /// Datas the contract serializer auto.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        public static async Task<string> DataContractSerializerAuto<T>(T item)
+        {
+            var ser = new DataContractSerializer(typeof(T));
+
+            StringBuilder b = new StringBuilder();
+
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+
+            xmlWriterSettings.Async = true;
+            xmlWriterSettings.Encoding = Encoding.UTF8;
+            xmlWriterSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+            xmlWriterSettings.ConformanceLevel = ConformanceLevel.Auto;
+
+            using (XmlWriter documentWriter = XmlWriter.Create(b, xmlWriterSettings))
+            {
+                ser.WriteObject(documentWriter, item);
+
+                await documentWriter.FlushAsync();
+            }
+
+            return b.ToString();
+        }
 
         /// <summary>
         /// Datas the contract deserialize.

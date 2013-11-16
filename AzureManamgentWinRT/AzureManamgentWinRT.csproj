@@ -117,6 +117,27 @@
     <Compile Include="Model\CloudServices\CloudServiceExtensionImage.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtension.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensionImagesRoot.cs" />
+    <Compile Include="Model\Extensions\DataSource.cs" />
+    <Compile Include="Model\Extensions\DataSources.cs" />
+    <Compile Include="Model\Extensions\DiagnosticInfrastructureLogs.cs" />
+    <Compile Include="Model\Extensions\DiagnosticMonitorConfiguration.cs" />
+    <Compile Include="Model\Extensions\Directories.cs" />
+    <Compile Include="Model\Extensions\DirectoryAbsolute.cs" />
+    <Compile Include="Model\Extensions\DirectoryBase.cs" />
+    <Compile Include="Model\Extensions\DirectoryConfiguration.cs" />
+    <Compile Include="Model\Extensions\DirectoryLocalResource.cs" />
+    <Compile Include="Model\Extensions\LogLevel.cs" />
+    <Compile Include="Model\Extensions\Logs.cs" />
+    <Compile Include="Model\Extensions\LogsBase.cs" />
+    <Compile Include="Model\Extensions\PerformanceCounterConfiguration.cs" />
+    <Compile Include="Model\Extensions\PerformanceCounters.cs" />
+    <Compile Include="Model\Extensions\PrivateConfig.cs" />
+    <Compile Include="Model\Extensions\PublicConfig.cs" />
+    <Compile Include="Model\Extensions\PublicConfigWadCfg.cs" />
+    <Compile Include="Model\Extensions\CloudServcieExtensionImageExtensions.cs" />
+    <Compile Include="Model\Extensions\SpecialLogDirectory.cs" />
+    <Compile Include="Model\Extensions\StorageAccount.cs" />
+    <Compile Include="Model\Extensions\WindowsEventLog.cs" />
     <Compile Include="Model\Storage\CapabilityEntry.cs" />
     <Compile Include="Model\Storage\CreateStorageServiceInput.cs" />
     <Compile Include="Model\Storage\ExtendedProperty.cs" />
@@ -135,6 +156,26 @@
     <Compile Include="ErrorHandling\AsyncExecutionResult.cs" />
     <Compile Include="Model\Storage\UpdateStorageServiceInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Model\CloudServices\XSD\DiagnosticsConfigSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Model\CloudServices\XSD\RDPPrivateConfig.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Model\CloudServices\XSD\RDPPublicConfig.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\CloudServices\XSD\DiagnosticsConfigSample.xml" />
+    <Content Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xml" />
+    <Content Include="Model\CloudServices\XSD\RDPPrivateConfigSample.xml" />
+    <Content Include="Model\CloudServices\XSD\RDPPublicConfigSample.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

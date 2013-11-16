@@ -82,11 +82,12 @@ namespace AzureManamgentWinRT.Clients
 
             try
             {
-                var postData = SerializationHelper.DataContractSerialize(extension);
+                var postData = await SerializationHelper.DataContractSerializerFragment<CloudServiceExtension>(extension);
 
+                                
                 var extOp = string.Format(addExtensionOperation, cloudService);
-
-                this.InitHttpClient(extOp);
+                
+                this.InitHttpClient(extOp, "application/xml");
 
                 var content = new StringContent(postData);
 
@@ -168,6 +169,17 @@ namespace AzureManamgentWinRT.Clients
                     Successfull = true
                 };
             }
+        }
+
+        public async Task<bool> ListExtensionsAsync()
+        {
+            this.InitHttpClient("/services/hostedservices/testazureapi/extensions");
+
+            var message = await this.client.GetAsync(this.apiOperationUri);
+
+            var content = await message.Content.ReadAsStringAsync();
+
+            return true;
         }
     }
 }
