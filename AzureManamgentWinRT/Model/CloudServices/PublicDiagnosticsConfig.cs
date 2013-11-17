@@ -4,14 +4,14 @@ using System.Runtime.Serialization;
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
     [DataContract(Name = "PublicConfig", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
-    public partial class PublicConfig
+    public partial class PublicDiagnosticsConfig
     {
 
         private PublicConfigWadCfg wadCfgField;
 
         private StorageAccount storageAccountField;
 
-        public PublicConfig()
+        public PublicDiagnosticsConfig()
         {
             this.storageAccountField = new StorageAccount();
             this.wadCfgField = new PublicConfigWadCfg();

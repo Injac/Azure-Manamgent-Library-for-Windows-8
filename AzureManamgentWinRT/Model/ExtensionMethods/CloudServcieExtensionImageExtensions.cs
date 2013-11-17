@@ -1,11 +1,7 @@
-﻿using AzureManamgentWinRT.Model.CloudServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using AzureManamgentWinRT.Model.CloudServices;
 
-namespace AzureManamgentWinRT.Model.Extensions
+namespace AzureManamgentWinRT.Model.ExtensionMethods
 {
     /// <summary>
     /// Extensions for the CloudserviceExtensionImages class.
@@ -68,5 +64,6 @@ namespace AzureManamgentWinRT.Model.Extensions
 
             return ext;
         }
+        
     }
 }
