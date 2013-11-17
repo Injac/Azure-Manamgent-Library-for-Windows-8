@@ -1,4 +1,4 @@
-## Azure Management Client for WinRT ##
+## Azure Managment Library for Windows 8 ##
 
 ## What is it? ##
 
