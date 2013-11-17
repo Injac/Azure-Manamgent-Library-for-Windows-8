@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Text;
 using AzureManamgentWinRT.Model.CloudServices;
+using AzureManamgentWinRT.Clients.Helper;
+using AzureManamgentWinRT.Models.ConfDiag.Public;
 
 namespace AzureManamgentWinRT.Model.ExtensionMethods
 {
@@ -8,7 +11,6 @@ namespace AzureManamgentWinRT.Model.ExtensionMethods
     /// </summary>
     public static class CloudServcieExtensionImageExtensions
     {
-
         
         /// <summary>
         /// Clouds the service extension image2 cloud service extension.
@@ -65,5 +67,118 @@ namespace AzureManamgentWinRT.Model.ExtensionMethods
             return ext;
         }
         
+        
+        /// <summary>
+        /// Serialize a public diagnostics configuration for a cloud service extension
+        /// and convert it to a base64 string. The value will be assigned to your
+        /// current CloudServiceExtension instance, propert PublicConfiguration.
+        /// </summary>
+        /// <param name="extension">The service extension</param>
+        /// <param name="config">The public configuration for a diagnostics extension</param>
+        public static async void  DiagnosticsPublicConfiguration2Base64(this CloudServiceExtension extension, PublicDiagnosticsConfig config)
+        {
+            try
+            {
+                var serialized = await SerializationHelper.DataContractSerializerFragment<PublicDiagnosticsConfig>(config);
+
+                if (serialized != null)
+                {
+                    var bas64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(serialized));
+
+                    extension.PublicConfiguration = bas64Encoded;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        /// <summary>
+        /// Serialize a private diagnostics configuration for a cloud service extension
+        /// and convert it to a base64 string. The value will be assigned to your
+        /// current CloudServiceExtension instance, propert PrivateConfiguration.
+        /// </summary>
+        /// <param name="extension">The service extension</param>
+        /// <param name="config">The public configuration for a diagnostics extension</param>
+        public static async void DiagnosticsPrivateConfiguration2Base64(this CloudServiceExtension extension, AzureManamgentWinRT.Models.ConfDiag.Private.PrivateConfig config )
+        {
+            try
+            {
+                var serialized = await SerializationHelper.DataContractSerializerFragment<AzureManamgentWinRT.Models.ConfDiag.Private.PrivateConfig>(config);
+
+                if (serialized != null)
+                {
+                    var bas64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(serialized));
+
+                    extension.PrivateConfiguration = bas64Encoded;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        
+        /// <summary>
+        /// Serialize a public RDP configuration for a cloud service extension
+        /// and convert it to a base64 string. The value will be assigned to your
+        /// current CloudServiceExtension instance, propert PrivateConfiguration.
+        /// </summary>
+        /// <param name="extension">The service extension</param>
+        /// <param name="config">The public configuration for a RDP extension</param>
+        public static async void RDPPublicConfiguration2Base64(this CloudServiceExtension extension,AzureManamgentWinRT.Models.ConfRDP.Public.PublicConfig config)
+        {
+            try
+            {
+                var serialized = await SerializationHelper.DataContractSerializerFragment<AzureManamgentWinRT.Models.ConfRDP.Public.PublicConfig>(config);
+
+                if (serialized != null)
+                {
+                    var bas64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(serialized));
+
+                    extension.PrivateConfiguration = bas64Encoded;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Serialize a private RDP configuration for a cloud service extension
+        /// and convert it to a base64 string. The value will be assigned to your
+        /// current CloudServiceExtension instance, propert PrivateConfiguration.
+        /// </summary>
+        /// <param name="extension">The service extension</param>
+        /// <param name="config">The private configuration for a RDP extension</param>
+        public static async void RDPPrivateConfiguration2Base64(this CloudServiceExtension extension, AzureManamgentWinRT.Models.ConfRDP.Private.PrivateConfig config)
+        {
+            try
+            {
+                var serialized = await SerializationHelper.DataContractSerializerFragment<AzureManamgentWinRT.Models.ConfRDP.Private.PrivateConfig>(config);
+
+                if (serialized != null)
+                {
+                    var bas64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(serialized));
+
+                    extension.PrivateConfiguration = bas64Encoded;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

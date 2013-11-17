@@ -131,7 +131,8 @@
     <Compile Include="Model\CloudServices\LogsBase.cs" />
     <Compile Include="Model\CloudServices\PerformanceCounterConfiguration.cs" />
     <Compile Include="Model\CloudServices\PerformanceCounters.cs" />
-    <Compile Include="Model\CloudServices\PrivateConfig.cs" />
+    <Compile Include="Model\CloudServices\PrivateConfigDiag.cs" />
+    <Compile Include="Model\CloudServices\PrivateConfigRDP.cs" />
     <Compile Include="Model\CloudServices\PublicDiagnosticsConfig.cs" />
     <Compile Include="Model\CloudServices\PublicConfigWadCfg.cs" />
     <Compile Include="Model\ExtensionMethods\CloudServcieExtensionImageExtensions.cs" />
