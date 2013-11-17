@@ -159,24 +159,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Model\CloudServices\XSD\DiagnosticsConfigSchema.xsd">
+    <EmbeddedResource Include="Model\CloudServices\XSD\DiagnosticsConfigSchema.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xsd">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Model\CloudServices\XSD\RDPPrivateConfig.xsd">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\CloudServices\XSD\RDPPrivateConfig.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Model\CloudServices\XSD\RDPPublicConfig.xsd">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\CloudServices\XSD\RDPPublicConfig.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\CloudServices\XSD\DiagnosticsConfigSample.xml" />
-    <Content Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xml" />
-    <Content Include="Model\CloudServices\XSD\RDPPrivateConfigSample.xml" />
-    <Content Include="Model\CloudServices\XSD\RDPPublicConfigSample.xml" />
+    <EmbeddedResource Include="Model\CloudServices\XSD\DiagnosticsConfigSample.xml" />
+    <EmbeddedResource Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xml" />
+    <EmbeddedResource Include="Model\CloudServices\XSD\RDPPrivateConfigSample.xml" />
+    <EmbeddedResource Include="Model\CloudServices\XSD\RDPPublicConfigSample.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
