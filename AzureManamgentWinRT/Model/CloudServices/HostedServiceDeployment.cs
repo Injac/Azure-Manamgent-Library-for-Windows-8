@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Model.HostedServices
 {
+    /// <summary>
+    /// Specifies the deployments in the cloud service.
+    /// </summary>
     public partial class HostedServiceDeployment
     {
-
         private string nameField;
 
         private string deploymentSlotField;
@@ -30,13 +33,13 @@ namespace AzureManamgentWinRT.Model.HostedServices
 
         private string sdkVersionField;
 
-        private string lockedField;
+        private bool lockedField;
 
-        private string rollbackAllowedField;
+        private bool rollbackAllowedField;
 
-        private string createdTimeField;
+        private DateTime createdTimeField;
 
-        private string lastModifiedTimeField;
+        private DateTime lastModifiedTimeField;
 
         private string virtualNetworkNameField;
 
@@ -48,6 +51,9 @@ namespace AzureManamgentWinRT.Model.HostedServices
 
         private List<HostedServiceDeploymentVirtualIP> virtualIPsField;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HostedServiceDeployment" /> class.
+        /// </summary>
         public HostedServiceDeployment()
         {
             this.virtualIPsField = new List<HostedServiceDeploymentVirtualIP>();
@@ -59,6 +65,10 @@ namespace AzureManamgentWinRT.Model.HostedServices
             this.roleInstanceListField = new List<HostedServiceDeploymentRoleInstance>();
         }
 
+        /// <summary>
+        /// Specifies the name of the deployment.
+        /// </summary>
+        /// <value>The name.</value>
         [XmlElement(Order = 0)]
         public string Name
         {
@@ -72,6 +82,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the environment in which this deployment is running, 
+        /// either staging or production.
+        /// </summary>
+        /// <value>The deployment slot.</value>
         [XmlElement(Order = 1)]
         public string DeploymentSlot
         {
@@ -85,6 +100,10 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the unique identifier for the deployment
+        /// </summary>
+        /// <value>The private ID.</value>
         [XmlElement(Order = 2)]
         public string PrivateID
         {
@@ -98,6 +117,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the status of the deployment.Possible values are:
+        /// Running, Suspended,RunningTransitioning,SupendedTransitioning,
+        /// Starting,Suspending,Deploying,Deleting.
+        /// </summary>
+        /// <value>The status.</value>
         [XmlElement(Order = 3)]
         public string Status
         {
@@ -111,6 +136,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the base-64-encoded identifier of the deployment. 
+        /// The label can be used for your tracking purposes.
+        /// </summary>
+        /// <value>The label.</value>
         [XmlElement(Order = 4)]
         public string Label
         {
@@ -124,6 +154,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the URL that can be used to access the cloud service.
+        /// For example, if the service name is MyService you could access 
+        /// the access the service by calling: http://MyService.cloudapp.net
+        /// </summary>
+        /// <value>The URL.</value>
         [XmlElement(Order = 5)]
         public string Url
         {
@@ -137,6 +173,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the base-64-encoded configuration file of the deployment.
+        /// You need this values to update the configuration of the cloud service.
+        /// </summary>
+        /// <value>The configuration.</value>
         [XmlElement(Order = 6)]
         public string Configuration
         {
@@ -150,6 +191,10 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Contains the list of role instances in the deployment.
+        /// </summary>
+        /// <value>The role instance list.</value>
         [XmlArray(Order = 7)]
         [XmlArrayItem("RoleInstance", IsNullable = false)]
         public List<HostedServiceDeploymentRoleInstance> RoleInstanceList
@@ -164,6 +209,10 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies information about an upgrade occurring on the deployment.
+        /// </summary>
+        /// <value>The upgrade status.</value>
         [XmlElement(Order = 8)]
         public HostedServiceDeploymentUpgradeStatus UpgradeStatus
         {
@@ -177,6 +226,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the number of upgrade domains available to the cloud service.
+        /// The UpgradeDomainCount element is only available using version 2011-06-01 or higher.
+        /// </summary>
+        /// <value>The upgrade domain count.</value>
         [XmlElement(Order = 9)]
         public string UpgradeDomainCount
         {
@@ -190,6 +244,10 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Contains the list of roles in the deployment.
+        /// </summary>
+        /// <value>The role list.</value>
         [XmlArray(Order = 10)]
         [XmlArrayItem("Role", IsNullable = false)]
         public List<HostedServiceDeploymentRole> RoleList
@@ -204,6 +262,13 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specified the version of the Windows Azure SDK that was used to generate the package 
+        /// for the deployment.The first two numerical components of the returned version represent
+        ///  the version of the SDK that was used to create the package.The SdkVersion element is only 
+        /// available using version 2011-06-01 or higher.
+        /// </summary>
+        /// <value>The SDK version.</value>
         [XmlElement(Order = 11)]
         public string SdkVersion
         {
@@ -217,8 +282,14 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Indicates whether the deployment is locked for new write operations. 
+        /// True if the deployment is locked because an existing operation is updating the deployment; 
+        /// otherwise false.The Locked element is only available using version 2011-06-01 or higher.
+        /// </summary>
+        /// <value>The locked.</value>
         [XmlElement(Order = 12)]
-        public string Locked
+        public bool Locked
         {
             get
             {
@@ -230,8 +301,14 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// GIndicates whether the Rollback Update Or Upgrade operation is 
+        /// allowed at this time. True if the operation is allowed; 
+        /// otherwise false.
+        /// </summary>
+        /// <value>The rollback allowed.</value>
         [XmlElement(Order = 13)]
-        public string RollbackAllowed
+        public bool RollbackAllowed
         {
             get
             {
@@ -243,8 +320,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the time that the deployment was created.
+        /// </summary>
+        /// <value>The created time.</value>
         [XmlElement(Order = 14)]
-        public string CreatedTime
+        public DateTime CreatedTime
         {
             get
             {
@@ -256,8 +337,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the last time that the deployment was modified.
+        /// </summary>
+        /// <value>The last modified time.</value>
         [XmlElement(Order = 15)]
-        public string LastModifiedTime
+        public DateTime LastModifiedTime
         {
             get
             {
@@ -269,6 +354,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the name of the Virtual Network 
+        /// that the virtual machine connects to.The VirtualNetworkName element 
+        /// is only available using version 2012-03-01 or higher.
+        /// </summary>
+        /// <value>The name of the virtual network.</value>
         [XmlElement(Order = 16)]
         public string VirtualNetworkName
         {
@@ -282,6 +373,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// Specifies the custom DNS settings that are specified for deployment.
+        /// The Dns element is only available using version 2012-03-01 or higher.
+        /// </summary>
+        /// <value>The DNS.</value>
         [XmlElement(Order = 17)]
         public HostedServiceDeploymentDns Dns
         {
@@ -295,8 +391,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlArray(Order = 18)]
-        [XmlArrayItem("ExtendedProperty", IsNullable = false)]
+        /// <summary>
+        /// Specifies the properties that are used to provide more information about a deployment.
+        /// </summary>
+        /// <value>The extended properties.</value>
+        [XmlElement(ElementName = "ExtendedProperties", Order = 18)]
         public List<HostedServiceDeploymentExtendedProperty> ExtendedProperties
         {
             get
@@ -309,6 +408,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
+        /// <summary>
+        /// GSpecifies information about when the Virtual Machine has been started and stopped.
+        /// The PersistentVMDowntime element is only available using version 2012-03-01 or higher.
+        /// </summary>
+        /// <value>The persistent VM downtime.</value>
         [XmlElement(Order = 19)]
         public HostedServiceDeploymentPersistentVMDowntime PersistentVMDowntime
         {
@@ -322,9 +426,13 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlArray(Order = 20)]
-        [XmlArrayItem("VirtualIP", IsNullable = false)]
-        public List<HostedServiceDeploymentVirtualIP> VirtualIPs
+        /// <summary>
+        /// Contains the virtual IP addresses that are specified for the deployment.The VirtualIPs 
+        /// element is only available using version 2012-03-01 or higher.
+        /// </summary>
+        /// <value>The virtual I ps.</value>
+        [XmlElement(ElementName="VirtualIPs",Order = 20)]
+       public List<HostedServiceDeploymentVirtualIP> VirtualIPs
         {
             get
             {

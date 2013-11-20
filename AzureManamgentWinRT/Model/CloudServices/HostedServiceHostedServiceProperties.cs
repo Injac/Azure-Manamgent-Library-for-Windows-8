@@ -1,12 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using AzureManamgentWinRT.Model.CloudServices;
 
 namespace AzureManamgentWinRT.Model.HostedServices
 {
-    [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/windowsazure")]
+  
+    /// <summary>
+    /// Specifies the properties that are assigned to
+    /// the cloud services.
+    /// </summary>
     public partial class HostedServiceHostedServiceProperties
     {
-
         private string descriptionField;
 
         private string affinityGroupField;
@@ -15,22 +20,29 @@ namespace AzureManamgentWinRT.Model.HostedServices
 
         private string labelField;
 
-        private string statusField;
+        private HostedSerivceStatus statusField;
 
-        private string dateCreatedField;
+        private DateTime dateCreatedField;
 
         private string dateLastModifiedField;
 
         private List<HostedServiceHostedServicePropertiesExtendedProperty> extendedPropertiesField;
 
-        private string guestAgentTypeField;
+        private HostedServiceGuestAgentType guestAgentTypeField;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HostedServiceHostedServiceProperties" /> class.
+        /// </summary>
         public HostedServiceHostedServiceProperties()
         {
             this.extendedPropertiesField = new List<HostedServiceHostedServicePropertiesExtendedProperty>();
         }
 
-        [XmlElement(Order = 0)]
+        /// <summary>
+        /// Specifies the description of the cloud service.
+        /// </summary>
+        /// <value>The description.</value>
+        [XmlElement(ElementName = "Description", Order = 0)]
         public string Description
         {
             get
@@ -43,7 +55,13 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 1)]
+        /// <summary>
+        /// Specifies the name of the affinity group with which
+        /// the cloud serivce is associated. If the cloud service is associated with an affinity 
+        /// group, the location element is not returned.
+        /// </summary>
+        /// <value>The affinity group.</value>
+        [XmlElement(ElementName = "AffinityGroup", Order = 1)]
         public string AffinityGroup
         {
             get
@@ -56,7 +74,13 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 2)]
+        /// <summary>
+        /// Specifies the geo-location of the cloud service in Windows Azure, if the
+        /// cloud serivce is not associated with an affinity group. If a location has been specified, the AffinityGroup
+        /// element is not returned.
+        /// </summary>
+        /// <value>The location.</value>
+        [XmlElement(ElementName = "Location", Order = 2)]
         public string Location
         {
             get
@@ -69,7 +93,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 3)]
+        /// <summary>
+        /// Specifies the base-64-encoded identifier of the cloud
+        /// serivce for your tracking purpooses.
+        /// </summary>
+        /// <value>The label.</value>
+        [XmlElement(ElementName = "Label", Order = 3)]
         public string Label
         {
             get
@@ -82,8 +111,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 4)]
-        public string Status
+        /// <summary>
+        /// Specifies the status of the cloud service.
+        /// </summary>
+        /// <value>The status.</value>
+        [XmlElement(ElementName = "Status", Order = 4)]
+        public HostedSerivceStatus Status
         {
             get
             {
@@ -95,8 +128,17 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 5)]
-        public string DateCreated
+        /// <summary>
+        /// Specifies the date that the cloud service was created.
+        /// ]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:
+        /// [2DigitSecond]Z format. The date 2011-05-11T16:15:26Z is an 
+        /// example that could be returned by the DateCreated or 
+        /// DateLastModified elements.
+        /// 
+        /// </summary>
+        /// <value>The date created.</value>
+        [XmlElement(ElementName = "DateCreated", Order = 5)]
+        public DateTime DateCreated
         {
             get
             {
@@ -108,7 +150,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 6)]
+        /// <summary>
+        /// Specifies the name of an extended cloud service property.
+        /// </summary>
+        /// <value>The date last modified.</value>
+        [XmlElement(ElementName="DateLastModified",Order = 6)]
         public string DateLastModified
         {
             get
@@ -121,8 +167,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlArray(Order = 7)]
-        [XmlArrayItem("ExtendedProperty", IsNullable = false)]
+        /// <summary>
+        /// Specifies the properties that are used to provide more
+        /// information about a deployment.
+        /// </summary>
+        /// <value>The extended properties.</value>
+        [XmlArray(ElementName = "ExtendedProperties", Order = 7)]
         public List<HostedServiceHostedServicePropertiesExtendedProperty> ExtendedProperties
         {
             get
@@ -135,8 +185,15 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 8)]
-        public string GuestAgentType
+        /// <summary>
+        /// Specifies the type of guest agent that is installed on the role instance.
+        /// The guest agent configures the role instance and enables it to 
+        /// communicate in Windows Azure. This element indicates wether the subscription is enabled to test new
+        /// versions of the guest agent.
+        /// </summary>
+        /// <value>The type of the guest agent.</value>
+        [XmlElement(ElementName = "GuestAgentType", Order = 8)]
+        public HostedServiceGuestAgentType GuestAgentType
         {
             get
             {

@@ -127,6 +127,7 @@
     <Compile Include="Model\CloudServices\ChangeConfigurationModes.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensions.cs" />
     <Compile Include="Model\CloudServices\DeploymentChangeType.cs" />
+    <Compile Include="Model\CloudServices\HostedSerivceStatus.cs" />
     <Compile Include="Model\CloudServices\HostedService.cs" />
     <Compile Include="Model\CloudServices\HostedServiceDeployment.cs" />
     <Compile Include="Model\CloudServices\HostedServiceDeploymentDns.cs" />
@@ -147,9 +148,14 @@
     <Compile Include="Model\CloudServices\HostedServiceDeploymentRoleOSVirtualHardDisk.cs" />
     <Compile Include="Model\CloudServices\HostedServiceDeploymentUpgradeStatus.cs" />
     <Compile Include="Model\CloudServices\HostedServiceDeploymentVirtualIP.cs" />
+    <Compile Include="Model\CloudServices\HostedServiceGuestAgentType.cs" />
+    <Compile Include="Model\CloudServices\HostedServiceHostCaching.cs" />
     <Compile Include="Model\CloudServices\HostedServiceHostedServiceProperties.cs" />
     <Compile Include="Model\CloudServices\HostedServiceHostedServicePropertiesExtendedProperty.cs" />
+    <Compile Include="Model\CloudServices\HostedServiceProtocolType.cs" />
+    <Compile Include="Model\CloudServices\HostedServiceRoleInstanceStatus.cs" />
     <Compile Include="Model\ExtensionMethods\ChangeConfigurationExtensionMethods.cs" />
+    <Compile Include="Model\HostedServicePowerState.cs" />
     <Compile Include="WADConfigurationExtensions\DiagnosticsConfigurationExtensions.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensionImage.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtension.cs" />

@@ -2,12 +2,19 @@ using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Model.HostedServices
 {
+    /// <summary>
+    /// Specifies the subnet name for a 
+    /// cloud service.
+    /// </summary>
     public partial class HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames
     {
-
         private string subnetNameField;
 
-        [XmlElement(Order = 0)]
+        /// <summary>
+        /// Gets or sets the name of the subnet.
+        /// </summary>
+        /// <value>The name of the subnet.</value>
+        [XmlElement(ElementName = "SubnetName", Order = 0)]
         public string SubnetName
         {
             get

@@ -1,16 +1,20 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using AzureManamgentWinRT.Model.CloudServices;
 
 namespace AzureManamgentWinRT.Model.HostedServices
 {
+    /// <summary>
+    /// A role instance in the instance list
+    /// of the deployment.
+    /// </summary>
     public partial class HostedServiceDeploymentRoleInstance
     {
-
         private string roleNameField;
 
         private string instanceNameField;
 
-        private string instanceStatusField;
+        private HostedServiceRoleInstanceStatus instanceStatusField;
 
         private string instanceUpgradeDomainField;
 
@@ -26,7 +30,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
 
         private List<HostedServiceDeploymentRoleInstanceInstanceEndpoint> instanceEndpointsField;
 
-        private string powerStateField;
+        private HostedServicePowerState powerStateField;
 
         private string hostNameField;
 
@@ -37,7 +41,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             this.instanceEndpointsField = new List<HostedServiceDeploymentRoleInstanceInstanceEndpoint>();
         }
 
-        [XmlElement(Order = 0)]
+        /// <summary>
+        /// Specifies the name of the role.
+        /// </summary>
+        /// <value>The name of the role.</value>
+        [XmlElement(ElementName = "RoleName", Order = 0)]
         public string RoleName
         {
             get
@@ -50,7 +58,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 1)]
+        /// <summary>
+        /// Specifies the name of a specific role intante, if an 
+        /// instance of the role is running.
+        /// </summary>
+        /// <value>The name of the instance.</value>
+        [XmlElement(ElementName = "InstanceName", Order = 1)]
         public string InstanceName
         {
             get
@@ -63,8 +76,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 2)]
-        public string InstanceStatus
+        /// <summary>
+        /// Specifies the current status of a role instance. 
+        /// </summary>
+        /// <value>The instance status.</value>
+        [XmlElement(ElementName = "InstanceStatus", Order = 2)]
+        public HostedServiceRoleInstanceStatus InstanceStatus
         {
             get
             {
@@ -75,8 +92,15 @@ namespace AzureManamgentWinRT.Model.HostedServices
                 this.instanceStatusField = value;
             }
         }
-
-        [XmlElement(Order = 3)]
+        
+        /// <summary>
+        /// Specifies the update domain that the role instance 
+        /// belongs to. Durin an upgrade deplyoment, all role
+        /// instances in the same update domain are updated
+        /// at the same time.
+        /// </summary>
+        /// <value>The instance upgrade domain.</value>
+        [XmlElement(ElementName="InstanceUpgradeDomain",Order = 3)]
         public string InstanceUpgradeDomain
         {
             get
@@ -89,7 +113,14 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 4)]
+        /// <summary>
+        /// Specifies the fault domain that the role instance belongs
+        /// to. Role instances that are part of the same fault domain
+        /// may all be vulnerable to the failure of the the same piece
+        /// of shared hardware.
+        /// </summary>
+        /// <value>The instance fault domain.</value>
+        [XmlElement(ElementName = "InstanceFaultDomain", Order = 4)]
         public string InstanceFaultDomain
         {
             get
@@ -102,7 +133,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 5)]
+        /// <summary>
+        /// Specifies the size of the role instance.
+        /// </summary>
+        /// <value>The size of the instance.</value>
+        [XmlElement(ElementName = "InsanceSize", Order = 5)]
         public string InstanceSize
         {
             get
@@ -115,7 +150,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 6)]
+        /// <summary>
+        /// Provides a snapshot of the state of the role instance at
+        /// the time that the operation was called.
+        /// </summary>
+        /// <value>The instance state details.</value>
+        [XmlElement(ElementName = "InstanceStateDetails", Order = 6)]
         public string InstanceStateDetails
         {
             get
@@ -128,7 +168,18 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 7)]
+        /// <summary>
+        /// For Virtual Machines the error codes are: 
+        /// WaitTimeout - The role insance did not communicate within 25 minutes. Typically this
+        /// indicated that it did not start, or that the gues agent is not installed.
+        /// VhdTooLarge - The VHD image selected was too large for the role instance.
+        /// AzureInternalErrror - An internal error has occured, that has caused the
+        /// role instance start. Contact support for additional assistance.
+        /// For web and worker roles this field returns an error code
+        /// that can be provided to Azure support.
+        /// </summary>
+        /// <value>The instance error code.</value>
+        [XmlElement(ElementName = "InstanceErrorCode", Order = 7)]
         public string InstanceErrorCode
         {
             get
@@ -141,7 +192,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 8)]
+        /// <summary>
+        /// Specifies the IP-Address of the role instance (DIP)
+        /// </summary>
+        /// <value>The ip address.</value>
+        [XmlElement(ElementName = "IpAddress", Order = 8)]
         public string IpAddress
         {
             get
@@ -154,8 +209,11 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlArray(Order = 9)]
-        [XmlArrayItem("InstanceEndpoint", IsNullable = false)]
+        /// <summary>
+        /// Contains a list aof all endpoints for the role.
+        /// </summary>
+        /// <value>The instance endpoints.</value>
+        [XmlArray(ElementName = "InstanceEndpoints", Order = 9)]
         public List<HostedServiceDeploymentRoleInstanceInstanceEndpoint> InstanceEndpoints
         {
             get
@@ -168,8 +226,12 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 10)]
-        public string PowerState
+        /// <summary>
+        /// Indicates the running state of the role instance.
+        /// </summary>
+        /// <value>The state of the power.</value>
+        [XmlElement(ElementName = "PowerState", Order = 10)]
+        public HostedServicePowerState PowerState
         {
             get
             {
@@ -181,7 +243,13 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 11)]
+        /// <summary>
+        /// Specifies the DNS host name of the cloud service in which
+        /// the role instance is running. This element is
+        /// listed for Virtual Machine deployments.
+        /// </summary>
+        /// <value>The name of the host.</value>
+        [XmlElement(ElementName = "HostName", Order = 11)]
         public string HostName
         {
             get
@@ -194,7 +262,14 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
 
-        [XmlElement(Order = 12)]
+        /// <summary>
+        /// Specifies the thumbprint of the RDP server certificate
+        /// (Windows) or SSH server certificate (Linux). The thumbprint
+        /// is only used for Virtual Machines that have been created from an 
+        /// image.
+        /// </summary>
+        /// <value>The remote access certificate thumbprint.</value>
+        [XmlElement(ElementName = "RemoteAccessCertificateThumbprint", Order = 12)]
         public string RemoteAccessCertificateThumbprint
         {
             get
