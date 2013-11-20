@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/windowsazure" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ChangeConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Configuration" type="xs:string" minOccurs="1" />
+        <xs:element name="TreatWarningsAsError" type="xs:string" />
+        <xs:element name="Mode" type="xs:string" />
+        <xs:element name="ExtendedProperties">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="ExtendedProperty">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Name" type="xs:string" />
+                    <xs:element name="Value" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ExtensionConfiguration">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AllRoles">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Extension">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Id" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="NamedRoles">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Role">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="RoleName" type="xs:string" />
+                          <xs:element name="Extensions">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Extension">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Id" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
@@ -7,7 +8,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
     /// First sub-element of WadCfg, main element
     /// of the diagnostics monitor configuration.
     /// </summary>
-    [DataContract(Name = "DiagnosticMonitorConfiguration", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+    
     public partial class DiagnosticMonitorConfiguration
     {
 
@@ -43,7 +44,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the diagnostic infrastructure logs.
         /// </summary>
         /// <value>The diagnostic infrastructure logs.</value>
-        [DataMember]
+        
+        [XmlElement("DiagnosticInfrastructureLogs", Order = 4)]
         public DiagnosticInfrastructureLogs DiagnosticInfrastructureLogs
         {
             get
@@ -60,7 +62,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the directories.
         /// </summary>
         /// <value>The directories.</value>
-        [DataMember]
+        
+        [XmlElement("Directories", Order = 3)]
         public Directories Directories
         {
             get
@@ -77,7 +80,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the logs.
         /// </summary>
         /// <value>The logs.</value>
-        [DataMember]
+        
+        [XmlElement("Logs", Order = 2)]
         public Logs Logs
         {
             get
@@ -94,7 +98,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the performance counters.
         /// </summary>
         /// <value>The performance counters.</value>
-        [DataMember]
+        
+        [XmlElement("PerformanceCounters",Order=1)]
         public PerformanceCounters PerformanceCounters
         {
             get
@@ -111,7 +116,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the windows event log.
         /// </summary>
         /// <value>The windows event log.</value>
-        [DataMember]
+        
+        [XmlElement("WindowsEventLog",Order=0)]
         public WindowsEventLog WindowsEventLog
         {
             get
@@ -129,7 +135,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// </summary>
         /// <value>The configuration change poll interval.</value>
         [DefaultValue("PT1M")]
-        [DataMember]
+        
+        [XmlAttribute("configurationChangePollInterval")]
         public string configurationChangePollInterval
         {
             get
@@ -147,7 +154,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// </summary>
         /// <value>The overall quota in MB.</value>
         [DefaultValue(typeof(uint), "4000")]
-        [DataMember]
+        
+        [XmlAttribute("overallQuotaInMB")]
         public uint overallQuotaInMB
         {
             get

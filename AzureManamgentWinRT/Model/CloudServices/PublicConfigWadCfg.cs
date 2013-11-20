@@ -1,9 +1,10 @@
 using System.Runtime.Serialization;
-
 //Diagnostic extension
+using System.Xml.Serialization;
+
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
-    [DataContract(Name = "PublicConfigWadCfg", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+    
     public partial class PublicConfigWadCfg
     {
 
@@ -14,7 +15,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
             this.diagnosticMonitorConfigurationField = new DiagnosticMonitorConfiguration();
         }
 
-        [DataMember]
+       
+        [XmlElement("DiagnosticMonitorConfiguration",Order=0)]
         public DiagnosticMonitorConfiguration DiagnosticMonitorConfiguration
         {
             get

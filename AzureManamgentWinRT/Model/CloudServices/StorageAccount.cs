@@ -1,9 +1,10 @@
 using System.Runtime.Serialization;
-
 //Storage accounts to be used with Azure Diagnostic
+using System.Xml.Serialization;
+
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
-    [DataContract(Name = "StorageAccount", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+   
     public partial class StorageAccount
     {
 
@@ -13,12 +14,13 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
 
         private string connectionQualifiersField;
 
+        
         public StorageAccount()
         {
             this.defaultEndpointsProtocolField = "https";
         }
 
-        [DataMember]
+        [XmlElement("Name",Order = 2)]
         public string Name
         {
             get
@@ -32,7 +34,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         }
 
         [System.ComponentModel.DefaultValueAttribute("https")]
-        [DataMember]
+        
+        [XmlElement("DefaultEndpointsProtocol",Order = 1)]
         public string DefaultEndpointsProtocol
         {
             get
@@ -45,7 +48,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
             }
         }
 
-        [DataMember]
+       
+        [XmlElement("ConnectionQualifiers",Order = 0)]
         public string ConnectionQualifiers
         {
             get

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
@@ -8,9 +9,10 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
     /// This element contains definitions for both the special directories (CrashDumps, FailedRequestLogs, and IISLogs) and directories that you create (DataSources). 
     /// http://msdn.microsoft.com/en-us/library/windowsazure/hh411551.aspx
     /// </summary>
-    [DataContract(Name = "Directories", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
-    public partial class Directories : LogsBase
+    
+    public partial class Directories :LogsBase
     {
+
 
         private SpecialLogDirectory iISLogsField;
 
@@ -19,6 +21,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         private SpecialLogDirectory crashDumpsField;
 
         private List<DirectoryConfiguration> dataSourcesField;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Directories" /> class.
@@ -33,7 +36,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// <summary>
         /// Gets or sets the IISLogs
         /// </summary>
-        [DataMember]
+        
+        [XmlElement("IISLogs",Order=3)]
         public SpecialLogDirectory IISLogs
         {
             get
@@ -49,7 +53,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// <summary>
         /// Gets or sets the FailedRequestLogs.
         /// </summary>
-        [DataMember]
+
+        [XmlElement("FailedRequestLogs", Order = 2)]
         public SpecialLogDirectory FailedRequestLogs
         {
             get
@@ -65,7 +70,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// <summary>
         /// Gets or sets the CrashDumps special directory.
         /// </summary>
-        [DataMember]
+       
+        [XmlElement("CrashDumps", Order = 1)]
         public SpecialLogDirectory CrashDumps
         {
             get
@@ -82,10 +88,10 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the DataSources, 
         /// containing the Directory Configurations.
         /// </summary>
-        [System.Xml.Serialization.XmlArrayAttribute(Order = 3)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order = 0)]
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable = false)]
-        [DataMember]
-        public List<DirectoryConfiguration> DataSources
+       
+       public List<DirectoryConfiguration> DataSources
         {
             get
             {
@@ -96,5 +102,10 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
                 this.dataSourcesField = value;
             }
         }
+
+
+       
+
+     
     }
 }

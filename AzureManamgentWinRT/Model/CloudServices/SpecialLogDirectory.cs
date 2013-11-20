@@ -1,8 +1,9 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
-    [DataContract(Name = "SpecialLogDirectory", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+   
     public partial class SpecialLogDirectory
     {
 
@@ -15,7 +16,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
             this.directoryQuotaInMBField = ((uint)(0));
         }
 
-        [DataMember]
+        
+        [XmlAttribute]
         public string container
         {
             get
@@ -29,7 +31,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         }
 
         [System.ComponentModel.DefaultValueAttribute(typeof(uint), "0")]
-        [DataMember]
+        
+        [XmlAttribute]
         public uint directoryQuotaInMB
         {
             get

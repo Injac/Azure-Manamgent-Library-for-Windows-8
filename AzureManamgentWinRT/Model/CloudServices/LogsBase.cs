@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
@@ -7,7 +8,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Logs))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Directories))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(DiagnosticInfrastructureLogs))]
-    [DataContract(Name = "LogsBase", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+ 
+    
     public partial class LogsBase
     {
 
@@ -22,7 +24,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         }
 
         [System.ComponentModel.DefaultValueAttribute(typeof(uint), "0")]
-        [DataMember]
+       
+        [XmlAttribute]
         public uint bufferQuotaInMB
         {
             get
@@ -36,7 +39,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         }
 
         [System.ComponentModel.DefaultValueAttribute("PT0S")]
-        [DataMember]
+        
+        [XmlAttribute]
         public string scheduledTransferPeriod
         {
             get

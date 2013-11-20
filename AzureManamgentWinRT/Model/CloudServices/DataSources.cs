@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
     /// <summary>
     /// Sub-Element of the the directories element.
     /// </summary>
-    [DataContract(Name = "DataSources", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+   
     public partial class DataSources
     {
 
@@ -21,7 +22,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the directory configuration.
         /// </summary>
         /// <value>The directory configuration.</value>
-        [DataMember]
+      
+        [XmlArray]
         public List<DirectoryConfiguration> DirectoryConfiguration
         {
             get

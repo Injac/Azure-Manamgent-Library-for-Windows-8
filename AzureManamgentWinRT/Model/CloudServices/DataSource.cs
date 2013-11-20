@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
@@ -13,13 +14,13 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
     /// http://msdn.microsoft.com/en-us/library/windowsazure/dn205075.aspx
     /// EventLogs
     /// </summary>
-    [DataContract(Name = "DataSource", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
-    public partial class DataSource
+   public partial class DataSource
     {
 
         private string nameField;
 
-        [DataMember]
+       
+        [XmlAttribute]
         public string name
         {
             get

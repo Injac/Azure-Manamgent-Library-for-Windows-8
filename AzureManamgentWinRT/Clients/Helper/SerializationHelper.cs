@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Clients.Helper
 {
@@ -36,6 +37,41 @@ namespace AzureManamgentWinRT.Clients.Helper
             return null;
         }
 
+
+        /// <summary>
+        /// XMLs the serialize.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="toSerilaze">To serilaze.</param>
+        /// <returns></returns>
+        public static async Task<string> XmlSerialize<T>(T toSerilaze)
+        {
+            if (toSerilaze != null)
+            {
+                try
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(T));
+
+                    MemoryStream s = new MemoryStream();
+
+                    ser.Serialize(s, toSerilaze);
+
+                    s.Position = 0;
+                    StreamReader sr = new StreamReader(s);
+
+                    var xml = await sr.ReadToEndAsync();
+
+                    return xml;
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+            }
+
+            return string.Empty;
+        }
        
         /// <summary>
         /// Datas the contract serializer fragment.
@@ -49,12 +85,13 @@ namespace AzureManamgentWinRT.Clients.Helper
 
             StringBuilder b = new StringBuilder();
 
-            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-
-            xmlWriterSettings.Async = true;
-            xmlWriterSettings.Encoding = Encoding.UTF8;
-            xmlWriterSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
-            xmlWriterSettings.ConformanceLevel = ConformanceLevel.Fragment;
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings
+            {
+                Async = true,
+                Encoding = Encoding.UTF8,
+                NamespaceHandling = NamespaceHandling.OmitDuplicates,
+                ConformanceLevel = ConformanceLevel.Fragment
+            };
 
             using (XmlWriter documentWriter = XmlWriter.Create(b, xmlWriterSettings))
             {

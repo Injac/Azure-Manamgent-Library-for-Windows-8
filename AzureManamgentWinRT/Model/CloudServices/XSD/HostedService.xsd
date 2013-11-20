@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/windowsazure" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="HostedService">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Url" type="xs:string" />
+        <xs:element name="ServiceName" type="xs:string" />
+        <xs:element name="HostedServiceProperties">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description" type="xs:string" />
+              <xs:element name="AffinityGroup" type="xs:string" />
+              <xs:element name="Location" type="xs:string" />
+              <xs:element name="Label" type="xs:string" />
+              <xs:element name="Status" type="xs:string" />
+              <xs:element name="DateCreated" type="xs:string" />
+              <xs:element name="DateLastModified" type="xs:string" />
+              <xs:element name="ExtendedProperties">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="ExtendedProperty">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Name" type="xs:string" />
+                          <xs:element name="Value" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GuestAgentType" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Deployments">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Deployment">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Name" type="xs:string" />
+                    <xs:element name="DeploymentSlot" type="xs:string" />
+                    <xs:element name="PrivateID" type="xs:string" />
+                    <xs:element name="Status" type="xs:string" />
+                    <xs:element name="Label" type="xs:string" />
+                    <xs:element name="Url" type="xs:string" />
+                    <xs:element name="Configuration" type="xs:string" />
+                    <xs:element name="RoleInstanceList">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="RoleInstance">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="RoleName" type="xs:string" />
+                                <xs:element name="InstanceName" type="xs:string" />
+                                <xs:element name="InstanceStatus" type="xs:string" />
+                                <xs:element name="InstanceUpgradeDomain" type="xs:string" />
+                                <xs:element name="InstanceFaultDomain" type="xs:string" />
+                                <xs:element name="InstanceSize" type="xs:string" />
+                                <xs:element name="InstanceStateDetails" type="xs:string" />
+                                <xs:element name="InstanceErrorCode" type="xs:string" />
+                                <xs:element name="IpAddress" type="xs:string" />
+                                <xs:element name="InstanceEndpoints">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element maxOccurs="unbounded" name="InstanceEndpoint">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="Name" type="xs:string" />
+                                            <xs:element name="Vip" type="xs:string" />
+                                            <xs:element name="PublicPort" type="xs:string" />
+                                            <xs:element name="LocalPort" type="xs:string" />
+                                            <xs:element name="Protocol" type="xs:string" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="PowerState" type="xs:string" />
+                                <xs:element name="HostName" type="xs:string" />
+                                <xs:element name="RemoteAccessCertificateThumbprint" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="UpgradeStatus">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="UpgradeType" type="xs:string" />
+                          <xs:element name="CurrentUpgradeDomainState" type="xs:string" />
+                          <xs:element name="CurrentUpgradeDomain" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="UpgradeDomainCount" type="xs:string" />
+                    <xs:element name="RoleList">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="Role">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="RoleName" type="xs:string" />
+                                <xs:element name="OSVersion" type="xs:string" />
+                                <xs:element minOccurs="0" name="RoleType" type="xs:string" />
+                                <xs:element name="ConfigurationSets">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="ConfigurationSet">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="ConfigurationSetType" type="xs:string" />
+                                            <xs:element name="InputEndpoints">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="InputEndpoint">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element minOccurs="0" name="LoadBalancedEndpointSetName" type="xs:string" />
+                                                        <xs:element minOccurs="0" name="LocalPort" type="xs:string" />
+                                                        <xs:element minOccurs="0" name="Name" type="xs:string" />
+                                                        <xs:element name="Port" type="xs:string" />
+                                                        <xs:element minOccurs="0" name="LoadBalancerProbe">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="Path" type="xs:string" />
+                                                              <xs:element name="Port" type="xs:string" />
+                                                              <xs:element name="Protocol" type="xs:string" />
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="Protocol" type="xs:string" />
+                                                        <xs:element name="Vip" type="xs:string" />
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element minOccurs="0" name="SubnetNames">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="SubnetName" type="xs:string" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="AvailabilitySetName" type="xs:string" />
+                                <xs:element minOccurs="0" name="DataVirtualHardDisks">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="DataVirtualHardDisk">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="HostCaching" type="xs:string" />
+                                            <xs:element name="DiskName" type="xs:string" />
+                                            <xs:element name="Lun" type="xs:string" />
+                                            <xs:element name="LogicalDiskSizeInGB" type="xs:string" />
+                                            <xs:element name="MediaLink" type="xs:string" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="OSVirtualHardDisk">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="HostCaching" type="xs:string" />
+                                      <xs:element name="DiskName" type="xs:string" />
+                                      <xs:element name="MediaLink" type="xs:string" />
+                                      <xs:element name="SourceImageName" type="xs:string" />
+                                      <xs:element name="OS" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" name="RoleSize" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SdkVersion" type="xs:string" />
+                    <xs:element name="Locked" type="xs:string" />
+                    <xs:element name="RollbackAllowed" type="xs:string" />
+                    <xs:element name="CreatedTime" type="xs:string" />
+                    <xs:element name="LastModifiedTime" type="xs:string" />
+                    <xs:element name="VirtualNetworkName" type="xs:string" />
+                    <xs:element name="Dns">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DnsServers">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="DnsServer">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Name" type="xs:string" />
+                                      <xs:element name="Address" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ExtendedProperties">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="ExtendedProperty">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Name" type="xs:string" />
+                                <xs:element name="Value" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PersistentVMDowntime">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="StartTime" type="xs:string" />
+                          <xs:element name="EndTime" type="xs:string" />
+                          <xs:element name="Status" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="VirtualIPs">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="VirtualIP">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Address" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DefaultWinRmCertificateThumbprint" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

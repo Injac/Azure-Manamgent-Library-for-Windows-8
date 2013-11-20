@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
@@ -15,7 +16,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
     ///arning Value: 3. Indicates logs for a warning. 
     ///http://msdn.microsoft.com/en-us/library/microsoft.windowsazure.diagnostics.loglevel.aspx
     /// </summary>
-    [DataContract(Name = "Logs", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+  
     public partial class Logs : LogsBase
     {
 
@@ -33,7 +34,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// records when performing a scheduled transfer. 
         /// </summary>
         [System.ComponentModel.DefaultValueAttribute(LogLevel.Undefined)]
-        [DataMember]
+      
+        [XmlAttribute]
         public LogLevel scheduledTransferLogLevelFilter
         {
             get

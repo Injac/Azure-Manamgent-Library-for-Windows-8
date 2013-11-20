@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
@@ -7,7 +8,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
     ///  When you create a PerformanceCounterConfiguration object, you add it to the DataSources collection of a DiagnosticMonitorConfiguration object.
     /// http://msdn.microsoft.com/en-us/library/microsoft.windowsazure.diagnostics.performancecounterconfiguration.aspx
     /// </summary>
-    [DataContract(Name = "PerformanceCounterConfiguration", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+    
     public partial class PerformanceCounterConfiguration
     {
 
@@ -19,7 +20,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets a performance counter specifier using Windows 
         /// performance counter syntax.
         /// </summary>
-        [DataMember]
+       
+        [XmlAttribute]
         public string counterSpecifier
         {
             get
@@ -36,7 +38,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the rate at which to sample the performance counter, 
         /// rounded up to the nearest second.
         /// </summary>
-        [DataMember]
+      
+        [XmlAttribute]
         public string sampleRate
         {
             get

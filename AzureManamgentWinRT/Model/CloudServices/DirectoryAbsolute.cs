@@ -1,8 +1,10 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
-    [DataContract(Name = "DirectoryAbsolute", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+    
+   
     public partial class DirectoryAbsolute : DirectoryBase
     {
 
@@ -19,7 +21,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// You should set expandEnvironment 
         /// to true.
         /// </summary>
-        [DataMember]
+        [XmlAttribute]
         public string path
         {
             get
@@ -36,7 +38,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets enviroment
         /// variable expansion.
         /// </summary>
-        [DataMember]
+        [XmlAttribute]
         public bool expandEnvironment
         {
             get

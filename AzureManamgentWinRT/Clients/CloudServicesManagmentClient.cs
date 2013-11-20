@@ -28,6 +28,9 @@ namespace AzureManamgentWinRT.Clients
         private const string listAvailableExtensionsOperation = "/services/extensions";
 
 
+        private const string changeDeploymentDeploymentSlot = "/services/hostedservices/{0}>/deploymentslots/{1}?comp=config ";
+
+        private const string changeDeploymentDeploymentName = "/services/hostedservices/{0}>/deployments/{1}?comp=config ";
        
         /// <summary>
         /// Initializes a new instance of the <see cref="CloudServicesManagmentClient" /> class.
@@ -83,7 +86,6 @@ namespace AzureManamgentWinRT.Clients
             try
             {
                 var postData = await SerializationHelper.DataContractSerializerFragment<CloudServiceExtension>(extension);
-
                                 
                 var extOp = string.Format(addExtensionOperation, cloudService);
                 
@@ -129,17 +131,16 @@ namespace AzureManamgentWinRT.Clients
         {
             try
             {
-
                 this.InitHttpClient(listAvailableExtensionsOperation);
 
                 var message = await this.client.GetAsync(this.apiOperationUri);
 
-                if(!message.IsSuccessStatusCode)
+                if (!message.IsSuccessStatusCode)
                 {
                     return new ListAvailableExtensionsOperationResult()
                     {
                         AsyncException = null,
-                        Message = string.Format("API call failed. Reason {0}.",message.ReasonPhrase),
+                        Message = string.Format("API call failed. Reason {0}.", message.ReasonPhrase),
                         OperationResult = null,
                         Successfull = false
                     };
@@ -148,7 +149,6 @@ namespace AzureManamgentWinRT.Clients
                 var xmlReply = await message.Content.ReadAsStringAsync();
 
                 var availableExtensions = SerializationHelper.DataContractDesirializeXmlFragment<CloudServiceExtensionImagesRoot>(xmlReply, "ExtensionImages", "http://schemas.microsoft.com/windowsazure");
-
                
                 return new ListAvailableExtensionsOperationResult()
                 {
@@ -160,7 +160,6 @@ namespace AzureManamgentWinRT.Clients
             }
             catch (Exception ex)
             {
-
                 return new ListAvailableExtensionsOperationResult()
                 {
                     AsyncException = ex,
@@ -171,15 +170,66 @@ namespace AzureManamgentWinRT.Clients
             }
         }
 
-        public async Task<bool> ListExtensionsAsync()
+        /// <summary>
+        /// Lists the extensions async.
+        /// </summary>
+        /// <param name="cloudService">The cloud service.</param>
+        /// <returns></returns>
+        public async Task<ListExtensionsOperationResult> ListExtensionsAsync(string cloudService)
         {
-            this.InitHttpClient("/services/hostedservices/testazureapi/extensions");
+            if (string.IsNullOrEmpty(cloudService) || string.IsNullOrWhiteSpace(cloudService))
+            {
+                return new ListExtensionsOperationResult()
+                {
+                    AsyncException = null,
+                    Message = "The name of the cloud service cannot be empty or null. Please check the parameter cloudService",
+                    Successfull = false
+                };
+            }
 
-            var message = await this.client.GetAsync(this.apiOperationUri);
+            try
+            {
+                var op = string.Format(addExtensionOperation, cloudService);
 
-            var content = await message.Content.ReadAsStringAsync();
+                this.InitHttpClient(op);
 
-            return true;
+                var message = await this.client.GetAsync(this.apiOperationUri);
+
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new ListExtensionsOperationResult()
+                    {
+                        AsyncException = null,
+                        Message = string.Format("Error occured during web-request. Reason:{0}.", message.ReasonPhrase),
+                        Successfull = true
+                    };
+                }
+
+                var content = await message.Content.ReadAsStringAsync();
+
+                var extensions = SerializationHelper.DataContractDeserialize<CloudServiceExtensions>(content);
+
+                return new ListExtensionsOperationResult()
+                {
+                    AsyncException = null,
+                    Message = string.Format("Extensions for cloud service {0} successfully retrieved.", cloudService),
+                    Successfull = true
+                };
+            }
+            catch (Exception ex)
+            {
+
+                return new ListExtensionsOperationResult()
+                {
+                    AsyncException = ex,
+                    Message = "An error occured. Please check the AsyncException property.",
+                    Successfull = false
+                };
+            }
         }
+
+
+     
     }
 }

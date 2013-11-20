@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\AzureManamgentWinRT.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -104,6 +105,8 @@
     <Compile Include="Clients\CloudServicesManagmentClient.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\AddCloudServiceExtensionOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListAvailableExtensionsOperationResult.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\ListExtensionsOperationResult.cs" />
+    <Compile Include="Clients\Helper\Base64Converter.cs" />
     <Compile Include="Clients\Helper\SerializationHelper.cs" />
     <Compile Include="Clients\ManagmentClientBase.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageAccountPropertiesResult.cs" />
@@ -114,6 +117,19 @@
     <Compile Include="Clients\StorageOperationResults\StorageListResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageServiceCreateResult.cs" />
     <Compile Include="Clients\StorageOperationResults\UpdateStorageServiceResult.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfiguration.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationExtendedProperty.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfiguration.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfigurationExtension.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfigurationNamedRoles.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfigurationNamedRolesRole.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfigurationNamedRolesRoleExtension.cs" />
+    <Compile Include="Model\CloudServices\ChangeConfigurationModes.cs" />
+    <Compile Include="Model\CloudServices\CloudServiceExtensions.cs" />
+    <Compile Include="Model\CloudServices\DeploymentChangeType.cs" />
+    <Compile Include="Model\CloudServices\HostedService.designer.cs" />
+    <Compile Include="Model\ExtensionMethods\ChangeConfigurationExtensionMethods.cs" />
+    <Compile Include="WADConfigurationExtensions\DiagnosticsConfigurationExtensions.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensionImage.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtension.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensionImagesRoot.cs" />
@@ -157,6 +173,7 @@
     <Compile Include="ErrorHandling\AsyncExecutionResult.cs" />
     <Compile Include="Model\Storage\UpdateStorageServiceInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WADConfigurationExtensions\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model\CloudServices\XSD\DiagnosticsConfigSchema.xsd">
@@ -177,6 +194,22 @@
     <EmbeddedResource Include="Model\CloudServices\XSD\DiagnosticsPrivateConfig.xml" />
     <EmbeddedResource Include="Model\CloudServices\XSD\RDPPrivateConfigSample.xml" />
     <EmbeddedResource Include="Model\CloudServices\XSD\RDPPublicConfigSample.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\CloudServices\XSD\ChangeConfiguration.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\CloudServices\XSD\ChangeConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\CloudServices\XSD\HostedService.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\CloudServices\XSD\HostedService.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

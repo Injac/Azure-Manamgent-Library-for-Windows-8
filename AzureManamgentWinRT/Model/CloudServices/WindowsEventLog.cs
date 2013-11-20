@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
 ///Handling windows event logging using Azure Diagnostics
+using System.Xml.Serialization;
+
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
-    [DataContract(Name = "WindowsEventLog", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+   
     public partial class WindowsEventLog : LogsBase
     {
 
@@ -18,7 +19,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
             this.scheduledTransferLogLevelFilterField = LogLevel.Undefined;
         }
 
-        [DataMember]
+        
+        [XmlElement]
         public List<DataSource> DataSource
         {
             get
@@ -32,7 +34,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         }
 
         [System.ComponentModel.DefaultValueAttribute(LogLevel.Undefined)]
-        [DataMember]
+        
+        [XmlAttribute]
         public LogLevel scheduledTransferLogLevelFilter
         {
             get

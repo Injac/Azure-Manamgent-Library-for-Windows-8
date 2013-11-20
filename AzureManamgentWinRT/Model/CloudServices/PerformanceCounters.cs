@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
-    [DataContract(Name = "PerformanceCounters", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+    
     public partial class PerformanceCounters : LogsBase
     {
 
@@ -14,7 +15,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
             this.performanceCounterConfigurationField = new List<PerformanceCounterConfiguration>();
         }
 
-        [DataMember]
+       
+        [XmlElement]
         public List<PerformanceCounterConfiguration> PerformanceCounterConfiguration
         {
             get

@@ -1,11 +1,12 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
     /// <summary>
     /// Subelement of WadCfg
     /// </summary>
-    [DataContract(Name = "DiagnosticInfrastructureLogs", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+   
     public partial class DiagnosticInfrastructureLogs : LogsBase
     {
 
@@ -20,8 +21,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the scheduled transfer log level filter.
         /// </summary>
         /// <value>The scheduled transfer log level filter.</value>
-        [System.ComponentModel.DefaultValueAttribute(LogLevel.Undefined)]
-        [DataMember]
+       
+        [XmlAttribute]
         public LogLevel scheduledTransferLogLevelFilter
         {
             get

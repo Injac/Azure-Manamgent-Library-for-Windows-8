@@ -1,11 +1,12 @@
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Models.ConfDiag.Public
 {
     /// <summary>
     /// TODO: Document
     /// </summary>
-    [DataContract(Name = "DirectoryLocalResource", Namespace = "http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration")]
+   
     public partial class DirectoryLocalResource : DirectoryBase
     {
 
@@ -13,7 +14,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
 
         private string nameField;
 
-        [DataMember]
+        
+        [XmlAttribute]
         public string relativePath
         {
             get
@@ -26,7 +28,8 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
             }
         }
 
-        [DataMember]
+        
+        [XmlAttribute]
         public string name
         {
             get
