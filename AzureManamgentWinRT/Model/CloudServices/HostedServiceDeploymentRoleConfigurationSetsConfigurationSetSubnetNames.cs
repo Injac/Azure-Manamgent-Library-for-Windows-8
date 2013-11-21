@@ -14,7 +14,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Gets or sets the name of the subnet.
         /// </summary>
         /// <value>The name of the subnet.</value>
-        [XmlElement(ElementName = "SubnetName", Order = 0)]
+        [XmlElement(ElementName = "SubnetName")]
         public string SubnetName
         {
             get

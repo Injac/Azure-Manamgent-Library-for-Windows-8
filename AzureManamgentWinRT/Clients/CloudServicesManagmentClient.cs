@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AzureManamgentWinRT.Model.HostedServices;
 
 namespace AzureManamgentWinRT.Clients
 {
@@ -27,10 +28,13 @@ namespace AzureManamgentWinRT.Clients
         /// </summary>
         private const string listAvailableExtensionsOperation = "/services/extensions";
 
-
         private const string changeDeploymentDeploymentSlot = "/services/hostedservices/{0}>/deploymentslots/{1}?comp=config ";
 
         private const string changeDeploymentDeploymentName = "/services/hostedservices/{0}>/deployments/{1}?comp=config ";
+
+        private const string getCloudSerivcePropertiesSimple = "services/hostedservices/{0}?embed-detail=false";
+
+        private const string getCloudSerivcePropertiesDetailed = "services/hostedservices/{0}?embed-detail=true";
        
         /// <summary>
         /// Initializes a new instance of the <see cref="CloudServicesManagmentClient" /> class.
@@ -195,7 +199,6 @@ namespace AzureManamgentWinRT.Clients
 
                 var message = await this.client.GetAsync(this.apiOperationUri);
 
-
                 if (!message.IsSuccessStatusCode)
                 {
                     return new ListExtensionsOperationResult()
@@ -219,7 +222,6 @@ namespace AzureManamgentWinRT.Clients
             }
             catch (Exception ex)
             {
-
                 return new ListExtensionsOperationResult()
                 {
                     AsyncException = ex,
@@ -229,7 +231,74 @@ namespace AzureManamgentWinRT.Clients
             }
         }
 
+        /// <summary>
+        /// Gets the cloud service properties async.
+        /// </summary>
+        /// <param name="cloudServiceName">Name of the cloud service.</param>
+        /// <param name="extended">The extended.</param>
+        /// <returns></returns>
+        public async Task<GetCloudServicePropertiesOperationResult> GetCloudServicePropertiesAsync(string cloudServiceName, bool extended=false)
+        {
+            if (string.IsNullOrEmpty(cloudServiceName) || string.IsNullOrWhiteSpace(cloudServiceName))
+            {
+                return new GetCloudServicePropertiesOperationResult()
+                {
+                    AsyncException = null,
+                    Message = "The name of the cloud service cannot be empty or null. Please check the parameter cloudService",
+                    Successfull = false
+                };
+            }
+            
+            string op = string.Empty;
 
-     
+            if (extended)
+            {
+                op = string.Format(getCloudSerivcePropertiesDetailed, cloudServiceName);
+            }
+            else
+            {
+                op = string.Format(getCloudSerivcePropertiesSimple, cloudServiceName);
+            }
+
+            try
+            {
+                this.InitHttpClient(op);
+
+                var message = await client.GetAsync(this.apiOperationUri);
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new GetCloudServicePropertiesOperationResult()
+                    {
+                        AsyncException = null,
+                        Message = string.Format("Something went wrong during the web-request. Reason: {0}", message.ReasonPhrase),
+                        Successfull = false
+                    };
+                }
+
+                var content = await message.Content.ReadAsStringAsync();
+
+                content = content.Replace("i:type=\"NetworkConfigurationSet\"", " ");
+
+                var deser = SerializationHelper.XmlDeSerialize<HostedService>(content);
+
+                return new GetCloudServicePropertiesOperationResult()
+                {
+                    AsyncException = null,
+                    Message = string.Format("Sucessfully retrieved properties for cloud service {0}",cloudServiceName),
+                    Successfull = true,
+                    OperationResult = deser
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GetCloudServicePropertiesOperationResult()
+                {
+                    AsyncException = ex,
+                    Message = "An error occured. Please check the AsyncException property for further informations about the error.",
+                    Successfull = false
+                };
+            }
+        }
     }
 }

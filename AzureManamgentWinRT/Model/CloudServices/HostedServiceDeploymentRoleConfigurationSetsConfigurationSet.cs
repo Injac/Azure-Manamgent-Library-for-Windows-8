@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Model.HostedServices
@@ -5,21 +6,22 @@ namespace AzureManamgentWinRT.Model.HostedServices
     /// <summary>
     /// Contains a collection of values that represents system or application configuration settings.
     /// </summary>
+    [XmlType(AnonymousType = false, Namespace = "http://schemas.microsoft.com/windowsazure",TypeName = "NetworkConfigurationSet")]
     public partial class HostedServiceDeploymentRoleConfigurationSetsConfigurationSet
     {
         private string configurationSetTypeField;
 
-        private HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpoints inputEndpointsField;
+        private List<HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpoints> inputEndpointsField;
 
-        private HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames subnetNamesField;
+        private List<HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames> subnetNamesField;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostedServiceDeploymentRoleConfigurationSetsConfigurationSet" /> class.
         /// </summary>
         public HostedServiceDeploymentRoleConfigurationSetsConfigurationSet()
         {
-            this.subnetNamesField = new HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames();
-            this.inputEndpointsField = new HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpoints();
+            this.subnetNamesField = new List<HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames>();
+            this.inputEndpointsField = new List<HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpoints>();
         }
 
         /// <summary>
@@ -27,7 +29,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// This is currently always set to NetworkConfiguration.
         /// </summary>
         /// <value>The type of the configuration set.</value>
-        [XmlElement(ElementName = "ConfigurationSetType", Order = 0)]
+        [XmlElement(ElementName = "ConfigurationSetType")]
         public string ConfigurationSetType
         {
             get
@@ -45,8 +47,8 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// for a virtual machine.
         /// </summary>
         /// <value>The input endpoints.</value>
-        [XmlElement(ElementName = "InputEndpoints", Order = 1)]
-        public HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpoints InputEndpoints
+        [XmlElement(ElementName = "InputEndpoints")]
+        public List<HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpoints> InputEndpoints
         {
             get
             {
@@ -63,8 +65,9 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// deployment belongs.
         /// </summary>
         /// <value>The subnet names.</value>
-        [XmlElement(ElementName = "SubnetNames", Order = 2)]
-        public HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames SubnetNames
+        [XmlArray(ElementName = "SubnetNames")]
+        [XmlArrayItem(ElementName = "SubnetName")]
+        public List<HostedServiceDeploymentRoleConfigurationSetsConfigurationSetSubnetNames> SubnetNames
         {
             get
             {
@@ -76,4 +79,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
             }
         }
     }
+
+
+  
 }

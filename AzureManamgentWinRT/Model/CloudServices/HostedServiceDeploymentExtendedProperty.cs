@@ -18,7 +18,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Gets or sets the name.
         /// </summary>
         /// <value>The name.</value>
-        [XmlElement(Order = 0)]
+        [XmlElement(ElementName = "Name")]
         public string Name
         {
             get
@@ -35,7 +35,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
-        [XmlElement(Order = 1)]
+        [XmlElement(ElementName = "Value")]
         public string Value
         {
             get

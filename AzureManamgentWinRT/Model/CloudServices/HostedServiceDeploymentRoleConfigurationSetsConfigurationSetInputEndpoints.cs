@@ -22,7 +22,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Gets or sets the input endpoint.
         /// </summary>
         /// <value>The input endpoint.</value>
-        [XmlElement(ElementName="InputEndpoint",Order = 0)]
+        [XmlElement(ElementName="InputEndpoint")]
         public HostedServiceDeploymentRoleConfigurationSetsConfigurationSetInputEndpointsInputEndpoint InputEndpoint
         {
             get

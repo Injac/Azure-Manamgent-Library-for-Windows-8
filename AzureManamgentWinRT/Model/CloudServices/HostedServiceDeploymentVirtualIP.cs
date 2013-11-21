@@ -13,7 +13,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Gets or sets the address.
         /// </summary>
         /// <value>The address.</value>
-        [XmlElement(Order = 0)]
+        [XmlElement(ElementName = "Address")]
         public string Address
         {
             get
@@ -25,5 +25,19 @@ namespace AzureManamgentWinRT.Model.HostedServices
                 this.addressField = value;
             }
         }
+        
+        /// <summary>
+        /// Gets or sets the is DNS programmed.
+        /// </summary>
+        /// <value>The is DNS programmed.</value>
+        [XmlElement(ElementName = "IsDnsProgrammed")]
+        public bool IsDnsProgrammed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>The name.</value>
+        [XmlElement(ElementName = "Name")]
+        public string Name { get; set; }
     }
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Windows.Media.Devices;
 
 namespace AzureManamgentWinRT.Clients.Helper
 {
@@ -72,7 +74,44 @@ namespace AzureManamgentWinRT.Clients.Helper
 
             return string.Empty;
         }
-       
+
+
+        /// <summary>
+        /// XMLs the de serialize.
+        /// </summary>
+        /// <typeparam name="T">The type of the T.</typeparam>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
+        public static T XmlDeSerialize<T>(string input)
+        {
+            if (!string.IsNullOrEmpty(input) || !string.IsNullOrWhiteSpace(input))
+            {
+                try
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(T),"http://schemas.microsoft.com/windowsazure");
+
+                    
+
+                    T result;
+
+                    using (TextReader reader = new StringReader(input))
+                    {
+                        result = (T) ser.Deserialize(reader);
+                    }
+
+                    return result;
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+            }
+
+            return default(T);
+        }
+
         /// <summary>
         /// Datas the contract serializer fragment.
         /// </summary>

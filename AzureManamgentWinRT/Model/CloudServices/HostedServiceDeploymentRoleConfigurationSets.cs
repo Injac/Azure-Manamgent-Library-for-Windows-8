@@ -5,7 +5,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
     /// <summary>
     /// Contains a collection of values that represents system or application configuration settings.
     /// </summary>
-    [XmlType(AnonymousType = true, Namespace = "http://schemas.microsoft.com/windowsazure")]
+    //[XmlType(AnonymousType = false, Namespace = "http://schemas.microsoft.com/windowsazure",TypeName = "NetworkConfigurationSet")]
     public partial class HostedServiceDeploymentRoleConfigurationSets
     {
 
@@ -23,7 +23,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Gets or sets the configuration set.
         /// </summary>
         /// <value>The configuration set.</value>
-        [XmlElement(ElementName="ConfigurationSet",Order = 0)]
+        [XmlElement(ElementName="ConfigurationSet")]
         public HostedServiceDeploymentRoleConfigurationSetsConfigurationSet ConfigurationSet
         {
             get

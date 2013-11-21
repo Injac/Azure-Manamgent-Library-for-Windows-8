@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="Clients\CloudServicesManagmentClient.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\AddCloudServiceExtensionOperationResult.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\GetCloudServicePropertiesOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListAvailableExtensionsOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListExtensionsOperationResult.cs" />
     <Compile Include="Clients\Helper\Base64Converter.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Model\CloudServices\HostedServiceRoleInstanceStatus.cs" />
     <Compile Include="Model\ExtensionMethods\ChangeConfigurationExtensionMethods.cs" />
     <Compile Include="Model\HostedServicePowerState.cs" />
+    <Compile Include="Model\VirtualMachineRoleSize.cs" />
     <Compile Include="WADConfigurationExtensions\DiagnosticsConfigurationExtensions.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensionImage.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtension.cs" />

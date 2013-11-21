@@ -6,6 +6,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
     /// <summary>
     /// Holds the properties for a hosted service.
     /// </summary>
+    [XmlRoot(ElementName = "HostedService", Namespace = "http://schemas.microsoft.com/windowsazure")]
     public partial class HostedService
     {
         private string urlField;
@@ -32,7 +33,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// serivce.
         /// </summary>
         /// <value>The URL.</value>
-        [XmlElement(Order = 0)]
+        [XmlElement(ElementName = "Url", Namespace = "http://schemas.microsoft.com/windowsazure")]
         public string Url
         {
             get
@@ -54,7 +55,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// by calling: http://MyService.cloudapp.net
         /// </summary>
         /// <value>The name of the service.</value>
-        [XmlElement(Order = 1)]
+        [XmlElement(ElementName = "ServiceName", Namespace = "http://schemas.microsoft.com/windowsazure")]
         public string ServiceName
         {
             get
@@ -71,7 +72,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// GSpecifies the properties that are assigned to the cloud service.
         /// </summary>
         /// <value>The hosted service properties.</value>
-        [XmlElement(Order = 2)]
+        [XmlElement(ElementName = "HostedServiceProperties", Namespace = "http://schemas.microsoft.com/windowsazure")]
         public HostedServiceHostedServiceProperties HostedServiceProperties
         {
             get
@@ -88,7 +89,10 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the deployments in the cloud service.
         /// </summary>
         /// <value>The deployments.</value>
-        [XmlElement(Namespace = "Deployments", Order = 3)]
+
+        [XmlArray(ElementName = "Deployments")]
+        [XmlArrayItem(ElementName = "Deployment")]
+        
         public List<HostedServiceDeployment> Deployments
         {
             get
@@ -109,7 +113,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// if a running role instance is updated to use a new SSL certificate.
         /// </summary>
         /// <value>The default win rm certificate thumbprint.</value>
-        [XmlElement(ElementName = "DefaultWinRmCertificateThumbprint", Order = 4)]
+        [XmlElement(ElementName = "DefaultWinRmCertificateThumbprint", Namespace = "http://schemas.microsoft.com/windowsazure")]
         public string DefaultWinRmCertificateThumbprint
         {
             get

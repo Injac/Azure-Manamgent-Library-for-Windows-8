@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace AzureManamgentWinRT.Model.HostedServices
@@ -38,7 +39,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the name of the role.
         /// </summary>
         /// <value>The name of the role.</value>
-        [XmlElement(ElementName="RoleName",Order = 0)]
+        [XmlElement(ElementName="RoleName")]
         public string RoleName
         {
             get
@@ -55,7 +56,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the version of the operating system on which the role instances are running
         /// </summary>
         /// <value>The OS version.</value>
-        [XmlElement(ElementName="OsVersion",Order = 1)]
+        [XmlElement(ElementName="OsVersion")]
         public string OSVersion
         {
             get
@@ -73,7 +74,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// deployments and by default is PersistentVMRole.
         /// </summary>
         /// <value>The type of the role.</value>
-        [XmlElement(ElementName="RoleType",Order = 2)]
+        [XmlElement(ElementName="RoleType")]
         public string RoleType
         {
             get
@@ -91,8 +92,9 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// application configuration settings.
         /// </summary>
         /// <value>The configuration sets.</value>
-        [XmlElement(ElementName = "ConfigurationSets", Order = 3)]
-        public List<HostedServiceDeploymentRoleConfigurationSets> ConfigurationSets
+        [XmlArray(ElementName = "ConfigurationSets")]
+        [XmlArrayItem("ConfigurationSet")]
+       public List<HostedServiceDeploymentRoleConfigurationSets> ConfigurationSets
         {
             get
             {
@@ -108,7 +110,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the name of a collection of virtual machines.
         /// </summary>
         /// <value>The name of the availability set.</value>
-        [XmlElement(ElementName = "AvailabilitySetName", Order = 4)]
+        [XmlElement(ElementName = "AvailabilitySetName")]
         public string AvailabilitySetName
         {
             get
@@ -126,7 +128,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// to add a data disk to a Virtaul Machine.
         /// </summary>
         /// <value>The data virtual hard disks.</value>
-        [XmlElement(Order = 5)]
+        [XmlElement(ElementName="DataVirtualHardDisks")]
         public HostedServiceDeploymentRoleDataVirtualHardDisks DataVirtualHardDisks
         {
             get
@@ -144,7 +146,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Virtual Machine.
         /// </summary>
         /// <value>The OS virtual hard disk.</value>
-        [XmlElement(Order = 6)]
+        [XmlElement(ElementName = "OSVirtualHardDisk")]
         public HostedServiceDeploymentRoleOSVirtualHardDisk OSVirtualHardDisk
         {
             get
@@ -161,7 +163,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the size of the role instance.
         /// </summary>
         /// <value>The size of the role.</value>
-        [XmlElement(Order = 7)]
+        [XmlElement(ElementName="RoleSize")]
         public string RoleSize
         {
             get

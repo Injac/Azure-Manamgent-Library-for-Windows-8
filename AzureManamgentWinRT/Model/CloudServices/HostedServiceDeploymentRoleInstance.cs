@@ -20,7 +20,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
 
         private string instanceFaultDomainField;
 
-        private string instanceSizeField;
+        private VirtualMachineRoleSize instanceSizeField;
 
         private string instanceStateDetailsField;
 
@@ -45,7 +45,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the name of the role.
         /// </summary>
         /// <value>The name of the role.</value>
-        [XmlElement(ElementName = "RoleName", Order = 0)]
+        [XmlElement(ElementName = "RoleName")]
         public string RoleName
         {
             get
@@ -63,7 +63,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// instance of the role is running.
         /// </summary>
         /// <value>The name of the instance.</value>
-        [XmlElement(ElementName = "InstanceName", Order = 1)]
+        [XmlElement(ElementName = "InstanceName")]
         public string InstanceName
         {
             get
@@ -80,7 +80,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the current status of a role instance. 
         /// </summary>
         /// <value>The instance status.</value>
-        [XmlElement(ElementName = "InstanceStatus", Order = 2)]
+        [XmlElement(ElementName = "InstanceStatus")]
         public HostedServiceRoleInstanceStatus InstanceStatus
         {
             get
@@ -100,7 +100,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// at the same time.
         /// </summary>
         /// <value>The instance upgrade domain.</value>
-        [XmlElement(ElementName="InstanceUpgradeDomain",Order = 3)]
+        [XmlElement(ElementName="InstanceUpgradeDomain")]
         public string InstanceUpgradeDomain
         {
             get
@@ -120,7 +120,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// of shared hardware.
         /// </summary>
         /// <value>The instance fault domain.</value>
-        [XmlElement(ElementName = "InstanceFaultDomain", Order = 4)]
+        [XmlElement(ElementName = "InstanceFaultDomain")]
         public string InstanceFaultDomain
         {
             get
@@ -137,8 +137,8 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the size of the role instance.
         /// </summary>
         /// <value>The size of the instance.</value>
-        [XmlElement(ElementName = "InsanceSize", Order = 5)]
-        public string InstanceSize
+        [XmlElement(ElementName = "InsanceSize")]
+        public VirtualMachineRoleSize InstanceSize
         {
             get
             {
@@ -155,7 +155,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// the time that the operation was called.
         /// </summary>
         /// <value>The instance state details.</value>
-        [XmlElement(ElementName = "InstanceStateDetails", Order = 6)]
+        [XmlElement(ElementName = "InstanceStateDetails")]
         public string InstanceStateDetails
         {
             get
@@ -179,7 +179,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// that can be provided to Azure support.
         /// </summary>
         /// <value>The instance error code.</value>
-        [XmlElement(ElementName = "InstanceErrorCode", Order = 7)]
+        [XmlElement(ElementName = "InstanceErrorCode")]
         public string InstanceErrorCode
         {
             get
@@ -196,7 +196,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Specifies the IP-Address of the role instance (DIP)
         /// </summary>
         /// <value>The ip address.</value>
-        [XmlElement(ElementName = "IpAddress", Order = 8)]
+        [XmlElement(ElementName = "IpAddress")]
         public string IpAddress
         {
             get
@@ -213,7 +213,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Contains a list aof all endpoints for the role.
         /// </summary>
         /// <value>The instance endpoints.</value>
-        [XmlArray(ElementName = "InstanceEndpoints", Order = 9)]
+        [XmlElement(ElementName = "InstanceEndpoints")]
         public List<HostedServiceDeploymentRoleInstanceInstanceEndpoint> InstanceEndpoints
         {
             get
@@ -230,7 +230,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// Indicates the running state of the role instance.
         /// </summary>
         /// <value>The state of the power.</value>
-        [XmlElement(ElementName = "PowerState", Order = 10)]
+        [XmlElement(ElementName = "PowerState")]
         public HostedServicePowerState PowerState
         {
             get
@@ -249,7 +249,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// listed for Virtual Machine deployments.
         /// </summary>
         /// <value>The name of the host.</value>
-        [XmlElement(ElementName = "HostName", Order = 11)]
+        [XmlElement(ElementName = "HostName")]
         public string HostName
         {
             get
@@ -269,7 +269,7 @@ namespace AzureManamgentWinRT.Model.HostedServices
         /// image.
         /// </summary>
         /// <value>The remote access certificate thumbprint.</value>
-        [XmlElement(ElementName = "RemoteAccessCertificateThumbprint", Order = 12)]
+        [XmlElement(ElementName = "RemoteAccessCertificateThumbprint")]
         public string RemoteAccessCertificateThumbprint
         {
             get
