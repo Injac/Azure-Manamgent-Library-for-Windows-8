@@ -46,24 +46,52 @@ namespace AzureManamgentWinRT.Clients.Helper
         /// <typeparam name="T">The type of the T.</typeparam>
         /// <param name="toSerilaze">To serilaze.</param>
         /// <returns></returns>
-        public static async Task<string> XmlSerialize<T>(T toSerilaze)
+        public static async Task<string> XmlSerialize<T>(T toSerilaze,bool omitDeclaration=false, bool indent = true)
         {
             if (toSerilaze != null)
             {
                 try
                 {
+                    
+
                     XmlSerializer ser = new XmlSerializer(typeof(T));
 
                     MemoryStream s = new MemoryStream();
 
-                    ser.Serialize(s, toSerilaze);
+                    XmlWriterSettings settings = new XmlWriterSettings();
 
-                    s.Position = 0;
-                    StreamReader sr = new StreamReader(s);
+                    settings.Encoding = Encoding.UTF8;
+                   
+                    if (!omitDeclaration)
+                    {
+                        settings.OmitXmlDeclaration = false;
+                    }
+                    else
+                    {
+                        settings.OmitXmlDeclaration = true;
+                    }
 
-                    var xml = await sr.ReadToEndAsync();
+                    if (indent)
+                    {
+                        settings.Indent = true;
+                    }
+                    else
+                    {
+                        settings.Indent = false;
+                    }
 
-                    return xml;
+                   
+                    using (XmlWriter writer = XmlWriter.Create(s, settings))
+                    {
+                        ser.Serialize(writer, toSerilaze);
+
+                        s.Position = 0;
+                        StreamReader sr = new StreamReader(s);
+
+                        var xml = await sr.ReadToEndAsync();
+
+                        return xml;
+                    }
                 }
                 catch (Exception ex)
                 {

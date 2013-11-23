@@ -1,5 +1,7 @@
 ﻿using AzureManamgentWinRT.Clients.CloudServicesOperationResults;
 using AzureManamgentWinRT.Clients.Helper;
+using AzureManamgentWinRT.Configuration;
+using AzureManamgentWinRT.Model;
 using AzureManamgentWinRT.Model.CloudServices;
 using System;
 using System.Collections.Generic;
@@ -28,9 +30,9 @@ namespace AzureManamgentWinRT.Clients
         /// </summary>
         private const string listAvailableExtensionsOperation = "/services/extensions";
 
-        private const string changeDeploymentDeploymentSlot = "/services/hostedservices/{0}>/deploymentslots/{1}?comp=config ";
+        private const string changeDeploymentDeploymentSlot = "/services/hostedservices/{0}/deploymentslots/{1}/?comp=config ";
 
-        private const string changeDeploymentDeploymentName = "/services/hostedservices/{0}>/deployments/{1}?comp=config ";
+        private const string changeDeploymentDeploymentName = "/services/hostedservices/{0}/deployments/{1}/?comp=config ";
 
         private const string getCloudSerivcePropertiesSimple = "services/hostedservices/{0}?embed-detail=false";
 
@@ -89,16 +91,18 @@ namespace AzureManamgentWinRT.Clients
 
             try
             {
-                var postData = await SerializationHelper.DataContractSerializerFragment<CloudServiceExtension>(extension);
+                var postData = await SerializationHelper.DataContractSerializerDocument<CloudServiceExtension>(extension);
                                 
                 var extOp = string.Format(addExtensionOperation, cloudService);
                 
                 this.InitHttpClient(extOp, "application/xml");
 
-                var content = new StringContent(postData);
+                var content = new StringContent(postData,Encoding.UTF8,"application/xml");
 
                 var message = await this.client.PostAsync(this.apiOperationUri, content);
 
+                var messageContent = await message.Content.ReadAsStringAsync();
+                
                 if (!message.IsSuccessStatusCode)
                 {
                     return new AddCloudServiceExtensionOperationResult()
@@ -285,7 +289,7 @@ namespace AzureManamgentWinRT.Clients
                 return new GetCloudServicePropertiesOperationResult()
                 {
                     AsyncException = null,
-                    Message = string.Format("Sucessfully retrieved properties for cloud service {0}",cloudServiceName),
+                    Message = string.Format("Sucessfully retrieved properties for cloud service {0}", cloudServiceName),
                     Successfull = true,
                     OperationResult = deser
                 };
@@ -298,6 +302,105 @@ namespace AzureManamgentWinRT.Clients
                     Message = "An error occured. Please check the AsyncException property for further informations about the error.",
                     Successfull = false
                 };
+            }
+        }
+
+        /// <summary>
+        /// Changes the deployment using deployment slots. Production or
+        /// Staging.
+        /// </summary>
+        /// <param name="cloudServiceName">Name of the cloud service.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="conf">The conf.</param>
+        /// <returns></returns>
+        public async Task<CloudServiceChangeDeploymentOperationResult> ChangeDeploymentUsingDeploymentSlotAsync(string cloudServiceName, DeploymentSlot slot, ChangeConfiguration conf)
+        {
+            if (string.IsNullOrEmpty(cloudServiceName) || string.IsNullOrWhiteSpace(cloudServiceName))
+            {
+                return new CloudServiceChangeDeploymentOperationResult()
+                {
+                    AsyncException = null,
+                    Successfull = false,
+                    Message = "Parameter cloudServicename cannot be null, empty or whitespace"
+                };
+            }
+
+            if (conf == null)
+            {
+                return new CloudServiceChangeDeploymentOperationResult()
+                {
+                    AsyncException = null,
+                    Successfull = false,
+                    Message = "Parameter conf cannot be null."
+                };
+            }
+
+            string op = string.Empty;
+
+            if (slot == DeploymentSlot.Production)
+            {
+                op = string.Format(changeDeploymentDeploymentSlot, cloudServiceName, "Production");
+            }
+
+            if (slot == DeploymentSlot.Staging)
+            {
+                op = string.Format(changeDeploymentDeploymentSlot, cloudServiceName, "Staging");
+            }
+
+            try
+            {
+                this.InitHttpClient(op, "application/xml");
+
+                var postData = await SerializationHelper.XmlSerialize<ChangeConfiguration>(conf, omitDeclaration: true);
+
+                var postContent = new StringContent(postData, Encoding.UTF8, "application/xml");
+
+                var message = await client.PostAsync(this.apiOperationUri, postContent);
+
+                var messageContent = await message.Content.ReadAsStringAsync();
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new CloudServiceChangeDeploymentOperationResult()
+                   {
+                       AsyncException = null,
+                       Successfull = false,
+                       Message = string.Format("An error occured during the request. Reason {0}, Error Message: {1}", message.ReasonPhrase, messageContent)
+                   };
+                }
+
+                if (message.Headers.Contains("x-ms-request-id"))
+                {
+                    var header = message.Headers.First(h => h.Key.Equals("x-ms-request-id"));
+
+                    var headerValue = header.Value.First();
+
+                    return new CloudServiceChangeDeploymentOperationResult()
+                    {
+                        AsyncException = null,
+                        Successfull = true,
+                        Message = headerValue
+                    };
+                }
+                else
+                {
+                    return new CloudServiceChangeDeploymentOperationResult()
+                    {
+                        AsyncException = null,
+                        Successfull = false,
+                        Message = "Request id was not delivered."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new CloudServiceChangeDeploymentOperationResult()
+                    {
+                        AsyncException = ex,
+                        Successfull = false,
+                        Message = "An error occured during the request. Please see the AsyncException property."
+                    };
             }
         }
     }

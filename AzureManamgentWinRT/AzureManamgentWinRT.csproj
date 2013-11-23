@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="Clients\CloudServicesManagmentClient.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\AddCloudServiceExtensionOperationResult.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\CloudServiceChangeDeploymentOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\GetCloudServicePropertiesOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListAvailableExtensionsOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListExtensionsOperationResult.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Model\CloudServices\HostedServiceHostedServicePropertiesExtendedProperty.cs" />
     <Compile Include="Model\CloudServices\HostedServiceProtocolType.cs" />
     <Compile Include="Model\CloudServices\HostedServiceRoleInstanceStatus.cs" />
+    <Compile Include="Model\DeploymentSlot.cs" />
     <Compile Include="Model\ExtensionMethods\ChangeConfigurationExtensionMethods.cs" />
     <Compile Include="Model\HostedServicePowerState.cs" />
     <Compile Include="Model\VirtualMachineRoleSize.cs" />
@@ -237,6 +239,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model\CloudServices\XSD\HostedService.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\CloudServices\XSD\ConfigOrig.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

@@ -134,7 +134,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the configuration change poll interval.
         /// </summary>
         /// <value>The configuration change poll interval.</value>
-        [DefaultValue("PT1M")]
+       
         
         [XmlAttribute("configurationChangePollInterval")]
         public string configurationChangePollInterval

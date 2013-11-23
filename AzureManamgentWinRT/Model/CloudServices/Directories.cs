@@ -37,7 +37,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the IISLogs
         /// </summary>
         
-        [XmlElement("IISLogs",Order=3)]
+        [XmlElement("IISLogs",Order=3,IsNullable = false)]
         public SpecialLogDirectory IISLogs
         {
             get
@@ -54,7 +54,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the FailedRequestLogs.
         /// </summary>
 
-        [XmlElement("FailedRequestLogs", Order = 2)]
+        [XmlElement("FailedRequestLogs", Order = 2,IsNullable = false)]
         public SpecialLogDirectory FailedRequestLogs
         {
             get
@@ -71,7 +71,7 @@ namespace AzureManamgentWinRT.Models.ConfDiag.Public
         /// Gets or sets the CrashDumps special directory.
         /// </summary>
        
-        [XmlElement("CrashDumps", Order = 1)]
+        [XmlElement("CrashDumps", Order = 1,IsNullable = false)]
         public SpecialLogDirectory CrashDumps
         {
             get
