@@ -37,6 +37,10 @@ namespace AzureManamgentWinRT.Clients
         private const string getCloudSerivcePropertiesSimple = "services/hostedservices/{0}?embed-detail=false";
 
         private const string getCloudSerivcePropertiesDetailed = "services/hostedservices/{0}?embed-detail=true";
+
+        private const string checkHostedSericeNameAvailability = "/services/hostedservices/operations/isavailable/{0}";
+
+        private const string createCloudSerice = "/services/hostedservices";
        
         /// <summary>
         /// Initializes a new instance of the <see cref="CloudServicesManagmentClient" /> class.
@@ -362,11 +366,11 @@ namespace AzureManamgentWinRT.Clients
                 if (!message.IsSuccessStatusCode)
                 {
                     return new CloudServiceChangeDeploymentOperationResult()
-                   {
-                       AsyncException = null,
-                       Successfull = false,
-                       Message = string.Format("An error occured during the request. Reason {0}, Error Message: {1}", message.ReasonPhrase, messageContent)
-                   };
+                    {
+                        AsyncException = null,
+                        Successfull = false,
+                        Message = string.Format("An error occured during the request. Reason {0}, Error Message: {1}", message.ReasonPhrase, messageContent)
+                    };
                 }
 
                 if (message.Headers.Contains("x-ms-request-id"))
@@ -394,14 +398,289 @@ namespace AzureManamgentWinRT.Clients
             }
             catch (Exception ex)
             {
-
                 return new CloudServiceChangeDeploymentOperationResult()
-                    {
-                        AsyncException = ex,
-                        Successfull = false,
-                        Message = "An error occured during the request. Please see the AsyncException property."
-                    };
+                {
+                    AsyncException = ex,
+                    Successfull = false,
+                    Message = "An error occured during the request. Please see the AsyncException property."
+                };
             }
         }
+
+        /// <summary>
+        /// Changes the deployment using deployment name. 
+        /// </summary>
+        /// <param name="cloudServiceName">Name of the cloud service.</param>
+        /// <param name="deplyomentName">The name of a cloud service deployment.</param>
+        /// <param name="conf">The conf.</param>
+        /// <returns></returns>
+        public async Task<CloudServiceChangeDeploymentOperationResult> ChangeDeploymentUsingDeploymentNameAsync(string cloudServiceName, string deploymentName, ChangeConfiguration conf)
+        {
+            if (string.IsNullOrEmpty(cloudServiceName) || string.IsNullOrWhiteSpace(cloudServiceName))
+            {
+                return new CloudServiceChangeDeploymentOperationResult()
+                {
+                    AsyncException = null,
+                    Successfull = false,
+                    Message = "Parameter cloudServicename cannot be null, empty or whitespace"
+                };
+            }
+
+            if (string.IsNullOrEmpty(deploymentName) || string.IsNullOrWhiteSpace(deploymentName))
+            {
+                return new CloudServiceChangeDeploymentOperationResult()
+                {
+                    AsyncException = null,
+                    Successfull = false,
+                    Message = "Parameter cloudServicename cannot be null, empty or whitespace"
+                };
+            }
+
+            if (conf == null)
+            {
+                return new CloudServiceChangeDeploymentOperationResult()
+                {
+                    AsyncException = null,
+                    Successfull = false,
+                    Message = "Parameter conf cannot be null."
+                };
+            }
+
+            string op = string.Empty;
+
+            op = string.Format(changeDeploymentDeploymentName, cloudServiceName, deploymentName);
+
+            try
+            {
+                this.InitHttpClient(op, "application/xml");
+
+                var postData = await SerializationHelper.XmlSerialize<ChangeConfiguration>(conf, omitDeclaration: true);
+
+                var postContent = new StringContent(postData, Encoding.UTF8, "application/xml");
+
+                var message = await client.PostAsync(this.apiOperationUri, postContent);
+
+                var messageContent = await message.Content.ReadAsStringAsync();
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new CloudServiceChangeDeploymentOperationResult()
+                    {
+                        AsyncException = null,
+                        Successfull = false,
+                        Message = string.Format("An error occured during the request. Reason {0}, Error Message: {1}", message.ReasonPhrase, messageContent)
+                    };
+                }
+
+                if (message.Headers.Contains("x-ms-request-id"))
+                {
+                    var header = message.Headers.First(h => h.Key.Equals("x-ms-request-id"));
+
+                    var headerValue = header.Value.First();
+
+                    return new CloudServiceChangeDeploymentOperationResult()
+                    {
+                        AsyncException = null,
+                        Successfull = true,
+                        Message = headerValue
+                    };
+                }
+                else
+                {
+                    return new CloudServiceChangeDeploymentOperationResult()
+                    {
+                        AsyncException = null,
+                        Successfull = false,
+                        Message = "Request id was not delivered."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new CloudServiceChangeDeploymentOperationResult()
+                {
+                    AsyncException = ex,
+                    Successfull = false,
+                    Message = "An error occured during the request. Please see the AsyncException property."
+                };
+            }
+        }
+
+
+        /// <summary>
+        /// Checks the hosted service name availability.
+        /// </summary>
+        /// <param name="cloudServiceName">Name of the cloud service.</param>
+        /// <returns></returns>
+        public async Task<HostedServiceCheckNameAvailabilityOperationResult> CheckHostedServiceNameAvailability(string cloudServiceName)
+        {
+            
+            if (string.IsNullOrEmpty(cloudServiceName) || string.IsNullOrWhiteSpace(cloudServiceName))
+            {
+                return new HostedServiceCheckNameAvailabilityOperationResult()
+                {
+                    AsyncException = null,
+                    Successfull = false,
+                    OperationResult = null
+                };
+            }
+
+            try
+            {
+                string op = string.Empty;
+
+                op = string.Format(checkHostedSericeNameAvailability, cloudServiceName);
+
+                this.InitHttpClient(op);
+
+                var message = await this.client.GetAsync(this.apiOperationUri);
+
+                var messageContent = await message.Content.ReadAsStringAsync();
+
+                var response = SerializationHelper.XmlDeSerialize<AvailabilityResponse>(messageContent);
+
+                if (!message.IsSuccessStatusCode)
+                {
+                    return new HostedServiceCheckNameAvailabilityOperationResult()
+                    {
+                        AsyncException = null,
+                        Successfull = true,
+                        OperationResult = response
+                    };
+                }
+                else
+                {
+                    if (response.Result)
+                    {
+                        return new HostedServiceCheckNameAvailabilityOperationResult()
+                        {
+                            AsyncException = null,
+                            Successfull = true,
+                            OperationResult = response
+                        };
+                    }
+                    else
+                    {
+                        return new HostedServiceCheckNameAvailabilityOperationResult()
+                        {
+                            AsyncException = null,
+                            Successfull = false,
+                            OperationResult = response
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new HostedServiceCheckNameAvailabilityOperationResult()
+                {
+                    AsyncException = ex,
+                    Successfull = false,
+                    OperationResult = null
+                };
+
+                
+            }
+
+        }
+
+
+        /// <summary>
+        /// Creates the cloud service async.
+        /// </summary>
+        /// <param name="serviceDefinition">The service definition.</param>
+        /// <returns></returns>
+        public async Task<CreateCloudServiceOperationResult> CreateCloudServiceAsync(CreateHostedService serviceDefinition)
+        {
+            if (serviceDefinition == null)
+            {
+                return new CreateCloudServiceOperationResult()
+                {
+                    AsyncException = null,
+                    OperationResult = "The parameter serviceDefinition cannot be null.",
+                    Successfull = false
+
+                };
+            }
+            
+            var op = string.Empty;
+
+            op = createCloudSerice;
+
+            this.InitHttpClient(op,"application/xml");
+
+            var xmlContent = await SerializationHelper.XmlSerialize<CreateHostedService>(serviceDefinition);
+
+            try
+            {
+                if (!string.IsNullOrEmpty(xmlContent))
+                {
+                    var httpContent = new StringContent(xmlContent, Encoding.UTF8, "application/xml");
+                    var message = await client.PostAsync(this.apiOperationUri, httpContent);
+                    var messageContent = await message.Content.ReadAsStringAsync();
+
+                    if (!message.IsSuccessStatusCode)
+                    {
+                        return new CreateCloudServiceOperationResult()
+                        {
+                            AsyncException = null,
+                            OperationResult = string.Format("Something went wrong during the request. Reason: {1}, Error message: {2}", message.ReasonPhrase, messageContent),
+                            Successfull = false
+
+                        };
+                    }
+                    else
+                    {
+                        if (message.Headers.Contains("x-ms-request-id"))
+                        {
+                            var header = message.Headers.First(h => h.Key.Equals("x-ms-request-id"));
+
+                            var headerValue = header.Value.First();
+
+
+                            return new CreateCloudServiceOperationResult()
+                            {
+                                AsyncException = null,
+                                OperationResult = headerValue,
+                                Successfull = true
+
+                            };
+                        }
+                        else
+                        {
+                            return new CreateCloudServiceOperationResult()
+                            {
+                                AsyncException = null,
+                                OperationResult = "The request returned a success code. But the required header value was not present.",
+                                Successfull = false
+
+                            };
+                        }
+                    }
+                }
+                else
+                {
+                    return new CreateCloudServiceOperationResult()
+                    {
+                        AsyncException = null,
+                        OperationResult = "The parameter serviceDefinition could not be serialized.",
+                        Successfull = false
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new CreateCloudServiceOperationResult()
+                {
+                    AsyncException = ex,
+                    OperationResult = "An error occured. Please check the AsyncException property for more informations",
+                    Successfull = false
+
+                };
+            }
+        }
+
     }
 }

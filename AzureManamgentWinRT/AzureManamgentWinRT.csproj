@@ -105,7 +105,9 @@
     <Compile Include="Clients\CloudServicesManagmentClient.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\AddCloudServiceExtensionOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\CloudServiceChangeDeploymentOperationResult.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\CreateCloudServiceOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\GetCloudServicePropertiesOperationResult.cs" />
+    <Compile Include="Clients\CloudServicesOperationResults\HostedServiceCheckNameAvailabilityOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListAvailableExtensionsOperationResult.cs" />
     <Compile Include="Clients\CloudServicesOperationResults\ListExtensionsOperationResult.cs" />
     <Compile Include="Clients\Helper\Base64Converter.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Clients\StorageOperationResults\StorageListResult.cs" />
     <Compile Include="Clients\StorageOperationResults\StorageServiceCreateResult.cs" />
     <Compile Include="Clients\StorageOperationResults\UpdateStorageServiceResult.cs" />
+    <Compile Include="Model\CloudServices\AvailabilityResponse.cs" />
     <Compile Include="Model\CloudServices\ChangeConfiguration.cs" />
     <Compile Include="Model\CloudServices\ChangeConfigurationExtendedProperty.cs" />
     <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfiguration.cs" />
@@ -127,6 +130,7 @@
     <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfigurationNamedRolesRole.cs" />
     <Compile Include="Model\CloudServices\ChangeConfigurationExtensionConfigurationNamedRolesRoleExtension.cs" />
     <Compile Include="Model\CloudServices\ChangeConfigurationModes.cs" />
+    <Compile Include="Model\CloudServices\CloudServiceExtendedProperty.cs" />
     <Compile Include="Model\CloudServices\CloudServiceExtensions.cs" />
     <Compile Include="Model\CloudServices\DeploymentChangeType.cs" />
     <Compile Include="Model\CloudServices\HostedSerivceStatus.cs" />
@@ -156,6 +160,7 @@
     <Compile Include="Model\CloudServices\HostedServiceHostedServicePropertiesExtendedProperty.cs" />
     <Compile Include="Model\CloudServices\HostedServiceProtocolType.cs" />
     <Compile Include="Model\CloudServices\HostedServiceRoleInstanceStatus.cs" />
+    <Compile Include="Model\CloudServices\CreateHostedService.cs" />
     <Compile Include="Model\DeploymentSlot.cs" />
     <Compile Include="Model\ExtensionMethods\ChangeConfigurationExtensionMethods.cs" />
     <Compile Include="Model\HostedServicePowerState.cs" />
