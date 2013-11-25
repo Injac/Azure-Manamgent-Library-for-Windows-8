@@ -1,3 +1,7 @@
+
+# UPDATE #
+Development of the library has been stopped. The official libraries for Windows  8.1 are going to be released
+soon.
 ## Azure Managment Library for Windows 8 ##
 
 ## What is it? ##
@@ -7,6 +11,7 @@ You can write a client app on Windows 8 or Windows 8.1 to manage your Azure subs
 ## Why? ##
 
 Because I started to work on an Azure management client for Windows 8.1.
+
 
 ## How to use ##
 
